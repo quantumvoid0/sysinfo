@@ -1,6 +1,9 @@
 # sysinfo
 Small utility to view system informations
 
+>[!WARNING]
+>`sys live` tool is under work and in beta, things might not render correctly or break. you are free to try it out tho
+
 ## Installation
 
 ```fish
@@ -31,7 +34,7 @@ Commands: <arg1>
   ram      : ram info
   swap     : swap info
   root     : root partition info
-  live     : live info
+  live     : live info (beta)
   me       : user info
 
 Commands: [arg2]
