@@ -352,7 +352,7 @@ int main(int argc, char **argv) {
         printf("  ram      : ram info\n");
         printf("  swap     : swap info\n");
         printf("  root     : root partition info\n");
-        printf("  live     : live info\n");     
+        printf("  live     : live info (beta)\n");     
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
