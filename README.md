@@ -1,5 +1,5 @@
 # sysinfo
-Small utility to view system informations
+Small utility to view system informations (for linux)
 
 >[!WARNING]
 >`sys live` tool is under work and in beta, things might not render correctly or break. you are free to try it out tho
