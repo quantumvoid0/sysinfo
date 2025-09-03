@@ -46,3 +46,8 @@ Examples:
   sys os
   sys ram used
 ```
+
+**usage of `sys live`**
+- `sys live` contains a status bar at bottom which shows what is selected right now
+- use arrow keys to scroll the boxes that is selected
+- left and right arrow keys to change selection

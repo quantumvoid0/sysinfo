@@ -86,40 +86,73 @@ void cpu_box(WINDOW *win) {
     if(fp) pclose(fp);
 }
 
-void cpufreq_box(WINDOW *win) {
-    char buffer[256]; FILE *fp=popen("cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq","r");
-    int i=1,row=1;
-    while(fp && fgets(buffer,sizeof(buffer),fp)) {
-        float f = atol(buffer)/1000.0;
-        mvwprintw(win,row++,2,"Core %d: %.2f MHz",i++,f);
+void cpufreq_box(WINDOW *win, int scroll_offset) {
+    char buffer[256];
+    FILE *fp = popen("cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq","r");
+    if(!fp) return;
+
+    int row = 1;
+    int i = 0;
+    int max_rows, max_cols;
+    getmaxyx(win, max_rows, max_cols);
+
+    while(fgets(buffer,sizeof(buffer),fp)) {
+        i++;
+        if(i <= scroll_offset) continue;
+        if(row >= max_rows - 1) break;
+        float f = atol(buffer) / 1000.0;
+        mvwprintw(win,row++,2,"Core %d: %.2f MHz", i, f);
     }
-    if(fp) pclose(fp);
+
+    pclose(fp);
 }
 
-void ram_box(WINDOW *win) {
-    char buffer[256]; FILE *fp=popen("grep -E 'MemTotal|MemAvailable' /proc/meminfo","r");
-    float total=0, avail=0; int row=1;
-    while(fp && fgets(buffer,sizeof(buffer),fp)) {
+void ram_box(WINDOW *win, int scroll_offset) {
+    char buffer[256]; 
+    FILE *fp = popen("grep -E 'MemTotal|MemAvailable' /proc/meminfo","r");
+    if(!fp) return;
+
+    float total=0, avail=0;
+    char lines[16][128]; int line_count=0;
+
+    while(fgets(buffer,sizeof(buffer),fp)) {
         if(strncmp(buffer,"MemTotal:",9)==0) total=atol(buffer+9)/1048576.0;
         if(strncmp(buffer,"MemAvailable:",13)==0) avail=atol(buffer+13)/1048576.0;
     }
-    mvwprintw(win,row++,2,"Total RAM   : %.2f GB",total);
-    mvwprintw(win,row++,2,"Available   : %.2f GB",avail);
-    mvwprintw(win,row++,2,"Used        : %.2f GB",total-avail);
-    if(fp) pclose(fp);
+    pclose(fp);
+
+    snprintf(lines[line_count++],128,"Total RAM   : %.2f GB", total);
+    snprintf(lines[line_count++],128,"Available   : %.2f GB", avail);
+    snprintf(lines[line_count++],128,"Used        : %.2f GB", total-avail);
+
+    int max_rows, max_cols; getmaxyx(win,max_rows,max_cols);
+    int row=1;
+    for(int i=scroll_offset;i<line_count && row<max_rows-1;i++)
+        mvwprintw(win,row++,2,"%s",lines[i]);
 }
 
-void swap_box(WINDOW *win) {
-    char buffer[256]; FILE *fp=popen("grep -E 'SwapTotal|SwapFree' /proc/meminfo","r");
-    float total=0, free=0; int row=1;
-    while(fp && fgets(buffer,sizeof(buffer),fp)) {
+void swap_box(WINDOW *win, int scroll_offset) {
+    char buffer[256]; 
+    FILE *fp = popen("grep -E 'SwapTotal|SwapFree' /proc/meminfo","r");
+    if(!fp) return;
+
+    float total=0, free=0;
+    char lines[16][128]; int line_count=0;
+
+    while(fgets(buffer,sizeof(buffer),fp)) {
         if(strncmp(buffer,"SwapTotal:",10)==0) total=atol(buffer+10)/1048576.0;
         if(strncmp(buffer,"SwapFree:",9)==0) free=atol(buffer+9)/1048576.0;
     }
-    mvwprintw(win,row++,2,"Total Swap  : %.2f GB",total);
-    mvwprintw(win,row++,2,"Free Swap   : %.2f GB",free);
-    mvwprintw(win,row++,2,"Used Swap   : %.2f GB",total-free);
-    if(fp) pclose(fp);
+    pclose(fp);
+
+    snprintf(lines[line_count++],128,"Total Swap  : %.2f GB", total);
+    snprintf(lines[line_count++],128,"Free Swap   : %.2f GB", free);
+    snprintf(lines[line_count++],128,"Used Swap   : %.2f GB", total-free);
+
+    int max_rows, max_cols; getmaxyx(win,max_rows,max_cols);
+    int row=1;
+    for(int i=scroll_offset;i<line_count && row<max_rows-1;i++)
+        mvwprintw(win,row++,2,"%s",lines[i]);
 }
 
 void root_box(WINDOW *win) {
@@ -139,93 +172,101 @@ int main() {
     cbreak();
     noecho();
     curs_set(0);
-    nodelay(stdscr, TRUE);
     keypad(stdscr, TRUE);
+    nodelay(stdscr, TRUE);
 
-    int *graph = NULL, graph_w = 0, graph_h = 0, graph_pos = 0;
+    int *graph=NULL, graph_w=0, graph_h=0, graph_pos=0;
+    int cpufreq_scroll=0, ram_scroll=0, swap_scroll=0;
+    int total_cores = sysconf(_SC_NPROCESSORS_ONLN);
 
-    while (1) {
-        int h, w;
-        getmaxyx(stdscr, h, w);
+    enum {SEL_CPU, SEL_RAM, SEL_SWAP} selected = SEL_CPU;
 
-        // Top row
-        int top_h = 3;
-        WINDOW *os_win     = newwin(top_h, w/4, 0, 0);
-        WINDOW *kernel_win = newwin(top_h, w/4, 0, w/4);
-        WINDOW *uptime_win = newwin(top_h, w/4, 0, w/2);
-        WINDOW *host_win   = newwin(top_h, w/4, 0, 3*w/4);
+    while(1) {
+        int h,w;
+        getmaxyx(stdscr,h,w);
 
+        int top_h=3;
+        WINDOW *os_win=newwin(top_h,w/4,0,0);
+        WINDOW *kernel_win=newwin(top_h,w/4,0,w/4);
+        WINDOW *uptime_win=newwin(top_h,w/4,0,w/2);
+        WINDOW *host_win=newwin(top_h,w/4,0,3*w/4);
 
-        int middle_box_h = 7;
-        int middle_box_w = w / 2;
+        int middle_h=7,middle_w=w/2;
+        WINDOW *cpu_win=newwin(middle_h,middle_w,top_h,0);
+        WINDOW *freq_win=newwin(middle_h,middle_w,top_h,middle_w);
+        WINDOW *ram_win=newwin(middle_h,middle_w,top_h+middle_h,0);
+        WINDOW *swap_win=newwin(middle_h,middle_w,top_h+middle_h,middle_w);
 
-        // Row 1
-        WINDOW *cpu_win  = newwin(middle_box_h, middle_box_w, top_h, 0);
-        WINDOW *freq_win = newwin(middle_box_h, middle_box_w, top_h, middle_box_w);
+        int user_root_h=5;
+        WINDOW *me_win=newwin(user_root_h,w/2,top_h+2*middle_h,0);
+        WINDOW *root_win=newwin(user_root_h,w/2,top_h+2*middle_h,w/2);
 
-        // Row 2
-        WINDOW *ram_win  = newwin(middle_box_h, middle_box_w, top_h + middle_box_h, 0);
-        WINDOW *swap_win = newwin(middle_box_h, middle_box_w, top_h + middle_box_h, middle_box_w);
+        int graph_start=top_h+2*middle_h+user_root_h;
+        int bottom_h=h-graph_start; if(bottom_h<4) bottom_h=4;
+        WINDOW *graph_win=newwin(bottom_h,w,graph_start,0);
 
-        // USER and ROOT row
-        int user_root_h = 5;
-        WINDOW *me_win   = newwin(user_root_h, w/2, top_h + 2*middle_box_h, 0);
-        WINDOW *root_win = newwin(user_root_h, w/2, top_h + 2*middle_box_h, w/2);
-
-        // Bottom CPU graph
-        int graph_start = top_h + 2*middle_box_h + user_root_h;
-        int bottom_h = h - graph_start;
-        if(bottom_h < 4) bottom_h = 4;
-        WINDOW *graph_win = newwin(bottom_h, w, graph_start, 0);
-
-
-        if(!graph || graph_w != w) {
+        if(!graph || graph_w!=w) {
             if(graph) free(graph);
-            graph_w = w; graph_h = bottom_h;
-            graph = calloc(graph_w, sizeof(int));
-            graph_pos = 0;
+            graph_w=w; graph_h=bottom_h;
+            graph=calloc(graph_w,sizeof(int)); graph_pos=0;
         }
 
-        WINDOW *wins[] = {
-            os_win,kernel_win,uptime_win,host_win,
-            cpu_win,freq_win,ram_win,swap_win,
-            me_win,root_win,graph_win
-        };
-        const char *titles[] = {
-            "OS","KERNEL","UPTIME","HOSTNAME",
-            "CPU","FREQ","RAM","SWAP",
-            "USER","ROOT","CPU LOAD"
-        };
-        for(int i=0;i<11;i++) draw_box(wins[i], titles[i]);
+        WINDOW *wins[]={os_win,kernel_win,uptime_win,host_win,cpu_win,freq_win,ram_win,swap_win,me_win,root_win,graph_win};
+        const char *titles[]={"OS","KERNEL","UPTIME","HOSTNAME","CPU","FREQ","RAM","SWAP","USER","ROOT","CPU LOAD"};
+
+        for(int i=0;i<11;i++) draw_box(wins[i],titles[i]);
 
         os_box(os_win); kernel_box(kernel_win); uptime_box(uptime_win); hostname_box(host_win);
-        cpu_box(cpu_win); cpufreq_box(freq_win); ram_box(ram_win); swap_box(swap_win);
+        cpu_box(cpu_win); cpufreq_box(freq_win, cpufreq_scroll);
+        ram_box(ram_win,ram_scroll); swap_box(swap_win,swap_scroll);
         me_box(me_win); root_box(root_win);
 
-        //fix this [FIX THIS!!!!!!!!]
+        // CPU graph
         float usage = get_total_cpu_usage();
         int bar = (int)(usage*(graph_h-2)/100.0);
-        graph[graph_pos] = bar;
-        graph_pos = (graph_pos + 1) % graph_w;
+        graph[graph_pos]=bar;
+        graph_pos=(graph_pos+1)%graph_w;
 
         werase(graph_win);
         box(graph_win,0,0);
-        mvwprintw(graph_win,0,2,"CPU LOAD");
-
         for(int x=0;x<graph_w;x++){
-            int idx = (graph_pos + x)%graph_w;
-            for(int y=0;y<graph[idx];y++){
-                mvwaddch(graph_win, graph_h-2-y, x+1, '#');
-            }
+            int idx=(graph_pos+x)%graph_w;
+            for(int y=0;y<graph[idx];y++)
+                mvwaddch(graph_win,graph_h-2-y,x+1,'#');
         }
-        mvwprintw(graph_win, graph_h-1, 2, "Usage: %.1f%%", usage);
+        mvwprintw(graph_win,0,2,"CPU LOAD | Usage: %.1f%%",usage);
 
+        int text_margin = 2;
+        char status_text[128];
+        const char *sel_text = (selected==SEL_CPU)?"CPU FREQ":(selected==SEL_RAM)?"RAM":"SWAP";
+        snprintf(status_text, sizeof(status_text), "Selected: %s  |  Use LEFT/RIGHT to change, UP/DOWN to scroll, Q to quit", sel_text);
+        
+        int start_col = w - strlen(status_text) - text_margin;
+        if (start_col < 0) start_col = 0; //just in case screen smoll
+    
+        attron(A_REVERSE);
+        mvhline(h-1,0,' ',w);             
+        mvprintw(h-1,start_col,"%s",status_text);
+        attroff(A_REVERSE);
 
         for(int i=0;i<11;i++) wrefresh(wins[i]);
         for(int i=0;i<11;i++) delwin(wins[i]);
 
-        int ch = getch();
+        int ch=getch();
         if(ch=='q') break;
+        else if(ch==KEY_LEFT) selected = (selected==SEL_CPU)?SEL_SWAP:selected-1;
+        else if(ch==KEY_RIGHT) selected = (selected==SEL_SWAP)?SEL_CPU:selected+1;
+        else if(ch==KEY_UP) {
+            if(selected==SEL_CPU) cpufreq_scroll=(cpufreq_scroll>0)?cpufreq_scroll-1:0;
+            else if(selected==SEL_RAM) ram_scroll=(ram_scroll>0)?ram_scroll-1:0;
+            else if(selected==SEL_SWAP) swap_scroll=(swap_scroll>0)?swap_scroll-1:0;
+        }
+        else if(ch==KEY_DOWN) {
+            int visible=middle_h-2;
+            if(selected==SEL_CPU && cpufreq_scroll<total_cores-visible) cpufreq_scroll++;
+            else if(selected==SEL_RAM) ram_scroll++; 
+            else if(selected==SEL_SWAP) swap_scroll++; 
+        }
 
         usleep(200000);
     }
@@ -234,4 +275,3 @@ int main() {
     if(graph) free(graph);
     return 0;
 }
-
