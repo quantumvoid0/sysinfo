@@ -1,4 +1,4 @@
-# sysinfo
+# better-fetch
 Small utility to view system informations (for linux)
 
 >[!WARNING]
@@ -7,14 +7,14 @@ Small utility to view system informations (for linux)
 ## Installation
 
 ```fish
-git clone https://github.com/quantumvoid0/sysinfo
+git clone https://github.com/better-ecosystem/better-fetch
 cd sysinfo
 sudo make install
 ```
 
 ## Uninstallation
 ```fish
-git clone https://github.com/quantumvoid0/sysinfo
+git clone https://github.com/better-ecosystem/better-fetch
 cd sysinfo
 sudo make uninstall
 ```
