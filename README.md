@@ -1,5 +1,5 @@
-# 👨‍💻 Better Fetch
-**Better Fetch; because your system deserves the spotlight. Specs, stats & performance at a glance**
+# 👨‍💻 Sysinfo
+**Sysinfo; because your system deserves the spotlight. Specs, stats & performance at a glance**
 
 ---
 
@@ -25,21 +25,20 @@
 
 **To install Better Fetch run the commands as give below**
 ```fish
-git clone https://github.com/better-ecosystem/better-fetch
-cd better-fetch
+git clone https://github.com/quantumvoid0/sysinfo
+cd sysinfo
 ./setup.sh install
 ```
 
 **To uninstall Better Fetch run the commands as give below**
 ```fish
-git clone https://github.com/better-ecosystem/better-fetch
-cd better-fetch
-chmod +x setup.sh
+git clone https://github.com/quantumvoid0/sysinfo
+cd sysinfo
 ./setup.sh uninstall
 ```
 
 > [!TIP]
-> **Security conscious?** You can review the installer script [here](https://raw.githubusercontent.com/better-ecosystem/better-fetch/refs/heads/main/setup.sh) before running it.
+> **Security conscious?** You can review the installer script [here](https://raw.githubusercontent.com/quantumvoid0/sysinfo/refs/heads/main/setup.sh) before running it.
 
 ## 🫴 Usage
 ```
@@ -75,7 +74,7 @@ Examples:
   sys swap left val
   sys ram used
 
-fetch is configured in ~/.config/better/better-fetch/config.json
+fetch is configured in ~/.config/sysinfo/config.json
 ```
 - If you have any questions on how to use or what something does , feel free to open a discussion
 
@@ -86,7 +85,7 @@ fetch is configured in ~/.config/better/better-fetch/config.json
 - press `q` to quit
 
 **usage of `sys fetch`**
-- fetch is configured in `~/.config/better/better-fetch/config.json`
+- fetch is configured in `~/.config/sysinfo/config.json`
 - formatting is as give below
   ```json
   {
@@ -99,7 +98,7 @@ fetch is configured in ~/.config/better/better-fetch/config.json
 
 ## 📚 Contribution
 
-If you want to contribute, see [CONTRIBUTING.md](https://github.com/better-ecosystem/better-fetch/blob/main/CONTRIBUTING.md)
+If you want to contribute, see [CONTRIBUTING.md](https://github.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md)
 
 
 ## 📄 License
@@ -110,6 +109,6 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 
 ### Made with ❤️ for the Linux community
 
-[Report Bug](https://github.com/better-ecosystem/better-fetch/issues) •
-[Request Feature](https://github.com/better-ecosystem/better-fetch/discussions) •
-[Contribute](https://github.com/better-ecosystem/better-fetch/blob/main/CONTRIBUTING.md)
+[Report Bug](https://github.com/quantumvoid0/sysinfo/issues) •
+[Request Feature](https://github.com/quantumvoid0/sysinfo/discussions) •
+[Contribute](https://github.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md)
