@@ -9,14 +9,14 @@ Better-Fetch; because your system deserves the spotlight. Specs, stats & perform
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
 cd better-fetch
-sudo make install
+./setup install
 ```
 
 ## Uninstallation
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
 cd better-fetch
-sudo make uninstall
+./setup uninstall
 ```
 
 ## Usage
