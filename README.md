@@ -21,6 +21,7 @@ sudo make uninstall
 
 ## Usage
 ```
+
 Usage: sys <arg1> [arg2] [arg3]
 
 Commands: <arg1>
@@ -35,6 +36,7 @@ Commands: <arg1>
   swap     : swap info
   root     : root partition info
   live     : live info (beta)
+  fetch    : fetches sys info (beta)
   me       : user info
 
 Commands: [arg2]
@@ -50,6 +52,8 @@ Examples:
   sys os
   sys swap left val
   sys ram used
+
+fetch is configured in ~/.config/better-fetch/config.json
 ```
 
 **usage of `sys live`**

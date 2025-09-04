@@ -1,0 +1,4 @@
+{
+    "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram total","cores"]
+}
+

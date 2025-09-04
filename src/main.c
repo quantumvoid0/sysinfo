@@ -18,7 +18,8 @@ int main(int argc, char **argv) {
         printf("  ram      : ram info\n");
         printf("  swap     : swap info\n");
         printf("  root     : root partition info\n");
-        printf("  live     : live info (beta)\n");     
+        printf("  live     : live info (beta)\n");   
+        printf("  fetch    : fetches sys info (beta)\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
@@ -31,6 +32,7 @@ int main(int argc, char **argv) {
         printf("  sys os\n");
         printf("  sys swap left val\n");
         printf("  sys ram used\n\n");
+        printf("fetch is configured in ~/.config/better-fetch/config.json\n\n");
 
         return 1;
     }
@@ -143,7 +145,10 @@ int main(int argc, char **argv) {
             printf("Usage: %s time [t|24]\n", argv[0]);
         }
     }
-    
+
+    if (strcmp(argv[1],"fetch") == 0) {
+        system("fetch");
+    };
 
     return 0;
 };
