@@ -8,14 +8,14 @@ Small utility to view system informations (for linux)
 
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
-cd sysinfo
+cd better-fetch
 sudo make install
 ```
 
 ## Uninstallation
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
-cd sysinfo
+cd better-fetch
 sudo make uninstall
 ```
 
