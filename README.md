@@ -21,7 +21,7 @@ sudo make uninstall
 
 ## Usage
 ```
-Usage: sys <arg1> [arg2]
+Usage: sys <arg1> [arg2] [arg3]
 
 Commands: <arg1>
   os       : operating system name
@@ -42,8 +42,13 @@ Commands: [arg2]
   swap [total/used/left]     : swap info
   cpu [load]                 : cpu load info
 
+Commands: [arg3]
+  ram [total/used/left] [val]      : ram info with only values
+  swap [total/used/left] [val]     : swap info with only values
+
 Examples:
   sys os
+  sys swap left val
   sys ram used
 ```
 
