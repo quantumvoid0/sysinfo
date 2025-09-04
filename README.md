@@ -1,8 +1,8 @@
 # better-fetch
-Small utility to view system informations (for linux)
+Better-Fetch; because your system deserves the spotlight. Specs, stats & performance at a glance
 
 >[!WARNING]
->`sys live` tool is under work and in beta, things might not render correctly or break. you are free to try it out tho
+>`sys live` & `sys fetch` toos are under work and in beta, things might not render correctly or break. you are free to try it out tho
 
 ## Installation
 
