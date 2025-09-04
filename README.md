@@ -1,18 +1,35 @@
-# better-fetch
-Better-Fetch; because your system deserves the spotlight. Specs, stats & performance at a glance
+# 👨‍💻 Better Fetch
+**Better Fetch; because your system deserves the spotlight. Specs, stats & performance at a glance**
+
+---
 
 >[!WARNING]
->`sys live` & `sys fetch` toos are under work and in beta, things might not render correctly or break. you are free to try it out tho
+>`sys live` & `sys fetch` toos are under work and in beta, things might not render correctly or break. you are free to try it out tho.
 
-## Installation
+> [!IMPORTANT]
+> 🚧 This project is under active development. Contributions, feature requests, ideas, and testers are welcome!
 
+---
+
+
+## ✨ Features
+
+- 🔄 Get system stats or specs easily for your needs.
+- 📱 Watch your system perfomance live in live mode.
+- 🎚️ Retrieve your system stats/specs with a ascii art beautifully.
+- 🧩 Modular design - use only what you need and remove the ones you don't use.
+---
+
+## 💾 Installation & Uninstallation
+
+**To install Better Fetch run the commands as give below**
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
 cd better-fetch
 ./setup.sh install
 ```
 
-## Uninstallation
+**To uninstall Better Fetch run the commands as give below**
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
 cd better-fetch
@@ -20,7 +37,10 @@ chmod +x setup.sh
 ./setup.sh uninstall
 ```
 
-## Usage
+> [!TIP]
+> **Security conscious?** You can review the installer script [here](https://raw.githubusercontent.com/better-ecosystem/better-fetch/refs/heads/main/setup.sh) before running it.
+
+## 🫴 Usage
 ```
 
 Usage: sys <arg1> [arg2] [arg3]
@@ -54,10 +74,41 @@ Examples:
   sys swap left val
   sys ram used
 
-fetch is configured in ~/.config/better-fetch/config.json
+fetch is configured in ~/.config/better/better-fetch/config.json
 ```
+- If you have any questions on how to use or what something does , feel free to open a discussion
 
 **usage of `sys live`**
 - `sys live` contains a status bar at bottom which shows what is selected right now
 - use arrow keys to scroll the boxes that is selected
 - left and right arrow keys to change selection
+- press `q` to quit
+
+**usage of `sys fetch`**
+- fetch is configured in `~/.config/better/better-fetch/config.json`
+- formatting is as give below
+  ```json
+  {
+    "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram total","cores"]
+  }
+  ```
+- you can mix and match all `sys` commands in there to display each
+
+---
+
+## 📚 Contribution
+
+If you want to contribute, see [CONTRIBUTING.md](https://github.com/better-ecosystem/better-fetch/blob/main/CONTRIBUTING.md)
+
+
+## 📄 License
+
+This project is licensed under the GNU General Public License v3.0. See the [LICENSE](LICENSE) for more details.
+
+---
+
+### Made with ❤️ for the Linux community
+
+[Report Bug](https://github.com/better-ecosystem/better-fetch/issues) •
+[Request Feature](https://github.com/better-ecosystem/better-fetch/discussions) •
+[Contribute](https://github.com/better-ecosystem/better-fetch/tree/main?tab=readme-ov-file#--contribution)
