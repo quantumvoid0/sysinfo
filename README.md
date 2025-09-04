@@ -9,6 +9,7 @@ Better-Fetch; because your system deserves the spotlight. Specs, stats & perform
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
 cd better-fetch
+chmod +x setup.sh
 ./setup install
 ```
 
@@ -16,6 +17,7 @@ cd better-fetch
 ```fish
 git clone https://github.com/better-ecosystem/better-fetch
 cd better-fetch
+chmod +x setup.sh
 ./setup uninstall
 ```
 
