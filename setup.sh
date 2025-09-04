@@ -3,8 +3,8 @@ set -e
 
 ACTION=$1
 PREFIX=/usr/local
-USER_CONFIG="$HOME/.config/better/better-fetch"
-ART="/usr/share/better-fetch"
+USER_CONFIG="$HOME/.config/sysinfo"
+ART="/usr/share/sysinfo"
 
 if [[ -z "$ACTION" ]]; then
     echo "Usage: $0 [install|uninstall]"
