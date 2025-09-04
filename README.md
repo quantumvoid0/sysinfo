@@ -8,6 +8,7 @@
 
 > [!IMPORTANT]
 > 🚧 This project is under active development. Contributions, feature requests, ideas, and testers are welcome!
+> ❗ More features coming soon!!
 
 ---
 
@@ -111,4 +112,4 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 
 [Report Bug](https://github.com/better-ecosystem/better-fetch/issues) •
 [Request Feature](https://github.com/better-ecosystem/better-fetch/discussions) •
-[Contribute](https://github.com/better-ecosystem/better-fetch/tree/main?tab=readme-ov-file#--contribution)
+[Contribute](https://github.com/better-ecosystem/better-fetch/blob/main/CONTRIBUTING.md)
