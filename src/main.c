@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
         printf("  sys os\n");
         printf("  sys swap left val\n");
         printf("  sys ram used\n\n");
-        printf("fetch is configured in ~/.config/better/better-fetch/config.json\n\n");
+        printf("fetch is configured in ~/.config/sysinfo/config.json\n\n");
 
         return 1;
     }

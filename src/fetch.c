@@ -51,9 +51,9 @@ int main(int argc, char **argv) {
     char config_path[512];
     const char *xdg = getenv("XDG_CONFIG_HOME");
     if (xdg && *xdg)
-        snprintf(config_path, sizeof(config_path), "%s/better/better-fetch/config.json", xdg);
+        snprintf(config_path, sizeof(config_path), "%s/sysinfo/config.json", xdg);
     else
-        snprintf(config_path, sizeof(config_path), "%s/.config/better/better-fetch/config.json", getenv("HOME"));
+        snprintf(config_path, sizeof(config_path), "%s/.config/sysinfo/config.json", getenv("HOME"));
 
     char commands[20][64];
     int n = load_commands_from_config(commands, 20, config_path);
@@ -79,13 +79,20 @@ int main(int argc, char **argv) {
     }
 
     OSAscii os_list[] = {
-        {"Gentoo", "/usr/share/better-fetch/gentoo.ascii"},
-        {"Arch", "/usr/share/better-fetch/arch.ascii"},
-        {"Fedora", "/usr/share/better-fetch/fedora.ascii"},
-        {"Debian", "/usr/share/better-fetch/debian.ascii"},
-        {"Mint", "/usr/share/better-fetch/mint.ascii"},
-        {"Ubuntu", "/usr/share/better-fetch/ubuntu.ascii"},
-        {"Manjaro","/usr/share/better-fetch/manjaro.ascii"}
+        {"Gentoo", "/usr/share/sysinfo/gentoo.ascii"},
+        {"Arch", "/usr/share/sysinfo/arch.ascii"},
+        {"Fedora", "/usr/share/sysinfo/fedora.ascii"},
+        {"Debian", "/usr/share/sysinfo/debian.ascii"},
+        {"Mint", "/usr/share/sysinfo/mint.ascii"},
+        {"Ubuntu", "/usr/share/sysinfo/ubuntu.ascii"},
+        {"Manjaro","/usr/share/sysinfo/manjaro.ascii"},
+        {"Pop","/usr/share/sysinfo/pop.ascii"},
+        {"Zorin","/usr/share/sysinfo/zorin.ascii"},
+        {"Elementary","/usr/share/sysinfo/elementary.ascii"},
+        {"MX","/usr/share/sysinfo/mx.ascii"},
+        {"Endeavour","/usr/share/sysinfo/endeavour.ascii"},
+        {"Kali","/usr/share/sysinfo/kali.ascii"},
+
     };
 
     char ascii[50][512];
