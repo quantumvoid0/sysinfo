@@ -142,9 +142,24 @@ int main(int argc, char **argv) {
         } else if (strcmp(argv[2], "24") == 0) {
             show_time(24);
         } else {
-            printf("Usage: %s time [t|24]\n", argv[0]);
+            printf("Usage: %s time [12|24]\n", argv[0]);
         }
     }
+
+    if (argc >= 2 && strcmp(argv[1], "date") == 0) {
+        int format = 1; // default: DD-MM-YYYY
+        if (argc >= 3) {
+            if (strcmp(argv[2], "1") == 0) format = 1;          // DD-MM-YYYY
+            else if (strcmp(argv[2], "2") == 0) format = 2;     // MM-DD-YYYY
+            else if (strcmp(argv[2], "3") == 0) format = 3;     // YYYY-MM-DD
+            else {
+                printf("Usage: %s date [1|2|3]\n", argv[0]);
+                return 1;
+            }
+        }
+        show_date(format);
+    }
+
 
     if (strcmp(argv[1],"fetch") == 0) {
         system("fetch");

@@ -31,6 +31,7 @@ void me();
 void hostname();
 
 void show_time();
+void show_date();
 
 #endif
 
