@@ -42,7 +42,6 @@ cd sysinfo
 
 ## 🫴 Usage
 ```
-
 Usage: sys <arg1> [arg2] [arg3]
 
 Commands: <arg1>
@@ -58,12 +57,16 @@ Commands: <arg1>
   root     : root partition info
   live     : live info (beta)
   fetch    : fetches sys info (beta)
+  time       : time
+  date       : date
   me       : user info
 
 Commands: [arg2]
   ram [total/used/left]      : ram info
   swap [total/used/left]     : swap info
   cpu [load]                 : cpu load info
+  time [12/24]               : time
+  date [1/2/3]               : date
 
 Commands: [arg3]
   ram [total/used/left] [val]      : ram info with only values

@@ -20,11 +20,15 @@ int main(int argc, char **argv) {
         printf("  root     : root partition info\n");
         printf("  live     : live info (beta)\n");   
         printf("  fetch    : fetches sys info (beta)\n");
+        printf("  time       : time\n");
+        printf("  date       : date\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
-        printf("  cpu [load]                 : cpu load info\n\n");
+        printf("  cpu [load]                 : cpu load info\n");
+        printf("  time [12/24]               : time\n");
+        printf("  date [1/2/3]               : date\n\n");
         printf("Commands: [arg3]\n");        
         printf("  ram [total/used/left] [val]      : ram info with only values\n");
         printf("  swap [total/used/left] [val]     : swap info with only values\n\n");
