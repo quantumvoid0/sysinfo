@@ -1,8 +1,28 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 #define INFO_COL 35
+
+const char *current_cmd = NULL;
+
+const char* get_icon(const char *cmd) {
+    if (!cmd) return "";
+    if (strcmp(cmd, "os") == 0) return "󰌽 ";
+    if (strcmp(cmd, "kernel") == 0) return " ";
+    if (strcmp(cmd, "host") == 0 || strcmp(cmd,"hostname")==0 || strcmp(cmd,"name")==0) return "󱩊 ";
+    if (strcmp(cmd, "uptime") == 0 || strcmp(cmd,"up")==0) return " ";
+    if (strcmp(cmd, "cpu") == 0 || strcmp(cmd,"cpu load")==0) return " ";
+    if (strcmp(cmd, "cpucores") == 0 || strcmp(cmd,"cores")==0 || strcmp(cmd,"core")==0 || strcmp(cmd,"cpucore")==0)  return " ";
+    if (strcmp(cmd, "cpufreq") == 0 || strcmp(cmd,"freq")==0 || strcmp(cmd,"cpufrequency")==0) return " ";
+    if (strcmp(cmd, "ram") == 0 || strcmp(cmd,"mem")==0 || strcmp(cmd,"memory")==0)  return " ";
+    if (strcmp(cmd, "swap") == 0) return "󰿣 ";
+    if (strcmp(cmd, "root") == 0) return " ";
+    if (strcmp(cmd, "me") == 0) return " ";
+    if (strcmp(cmd, "time") == 0) return "󰥔 ";
+    return "";
+}
 
 int load_ascii(const char *path, char ascii[][512], int max_lines) {
     FILE *fp = fopen(path, "r");
@@ -65,18 +85,26 @@ int main(int argc, char **argv) {
 
     char outputs[20][256];
     char last_os[256] = {0};
+
+    if (argc > 1)
+        current_cmd = argv[1];
+
     for (int i = 0; i < n; i++) {
         char cmd[256];
         snprintf(cmd, sizeof(cmd), "sys %s", commands[i]);
         FILE *fp = popen(cmd, "r");
         if (!fp) continue;
+    
         if (fgets(outputs[i], sizeof(outputs[i]), fp)) {
             outputs[i][strcspn(outputs[i], "\n")] = 0;
+    
             if (strcmp(commands[i], "os") == 0)
                 strncpy(last_os, outputs[i], sizeof(last_os)-1);
         }
+    
         pclose(fp);
     }
+
 
     OSAscii os_list[] = {
         {"Gentoo", "/usr/share/sysinfo/gentoo.ascii"},
@@ -92,7 +120,6 @@ int main(int argc, char **argv) {
         {"MX","/usr/share/sysinfo/mx.ascii"},
         {"Endeavour","/usr/share/sysinfo/endeavour.ascii"},
         {"Kali","/usr/share/sysinfo/kali.ascii"},
-
     };
 
     char ascii[50][512];
@@ -121,11 +148,24 @@ int main(int argc, char **argv) {
 
     int max_lines = ascii_lines > n ? ascii_lines : n;
     for (int i = 0; i < max_lines; i++) {
-        if (i < ascii_lines) printf("%-22s", ascii[i]);
-        else printf("%-22s", "");
-        if (i < n) printf("%-14s : %s\n", commands[i], outputs[i]);
-        else printf("\n");
+        if (i < ascii_lines)
+            printf("%-22s", ascii[i]);
+        else
+            printf("%-22s", ""); 
+    
+        
+        if (i < n) {
+            char cmd_copy[64];
+            strncpy(cmd_copy, commands[i], sizeof(cmd_copy)-1);
+            cmd_copy[sizeof(cmd_copy)-1] = 0;
+            char *first_word = strtok(cmd_copy, " ");
+    
+            printf("%s %-14s • %s\n", get_icon(first_word), commands[i], outputs[i]);
+        } else {
+            printf("\n");
     }
+}
+
 
     return 0;
 }
