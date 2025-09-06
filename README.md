@@ -21,7 +21,21 @@
 - 🧩 Modular design - use only what you need and remove the ones you don't use.
 ---
 
+<details>
+<summary><b>Dependencies</b></summary>
+
+## 😃 Dependencies
+- this section exists due to...well certain someone
+- dependencies are as listed below :
+  - linux
+  - gcc
+  - ncurses
+  
+</details>
+
 ## 💾 Installation & Uninstallation
+
+- please ensure dependencies are installed before installing
 
 **To install Sysinfo run the commands as give below**
 ```fish
