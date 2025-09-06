@@ -20,8 +20,8 @@ int main(int argc, char **argv) {
         printf("  root     : root partition info\n");
         printf("  live     : live info (beta)\n");   
         printf("  fetch    : fetches sys info (beta)\n");
-        printf("  time       : time\n");
-        printf("  date       : date\n");
+        printf("  time     : time\n");
+        printf("  date     : date\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");

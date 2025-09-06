@@ -29,7 +29,7 @@ void cpucores() {
 void cpufreq() {
     char buffer[256];
     FILE *fp = popen("cat /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq","r");
-    int i = 1;
+    int i = 0;
     while (fgets(buffer,sizeof(buffer),fp) != NULL) {
         char core[256];
         FILE *cr = popen("nproc","r");

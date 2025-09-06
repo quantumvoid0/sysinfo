@@ -57,8 +57,8 @@ Commands: <arg1>
   root     : root partition info
   live     : live info (beta)
   fetch    : fetches sys info (beta)
-  time       : time
-  date       : date
+  time     : time
+  date     : date
   me       : user info
 
 Commands: [arg2]
