@@ -65,6 +65,7 @@ Commands: [arg2]
   ram [total/used/left]      : ram info
   swap [total/used/left]     : swap info
   cpu [load]                 : cpu load info
+  cpufreq [core number]      : cpu freq by core number
   time [12/24]               : time
   date [1/2/3]               : date
 

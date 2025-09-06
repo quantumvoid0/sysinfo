@@ -55,21 +55,23 @@ void uptime() {
     pclose(fp);
 };
 
-
-
-
-
 void root() {
-    char buffer[256];
-    FILE *fp = popen("df -h /","r");
-    while (fgets(buffer,sizeof(buffer),fp) != NULL) {
-        printf("%s",buffer);
-    };
+    char filesystem[64], size[32], used[32], avail[32], usep[16], mount[64];
+    FILE *fp = popen("df -h / | tail -1", "r");
+    if (!fp) {
+        perror("popen");
+        return;
+    }
+
+    if (fscanf(fp, "%63s %31s %31s %31s %15s %63s",
+               filesystem, size, used, avail, usep, mount) == 6) {
+        printf("%s/%s [%s]\n", used, size, usep);
+    } else {
+        printf("Failed to parse root info\n");
+    }
+
     pclose(fp);
-};
-
-
-
+}
 
 void me() {
     char buffer[256];

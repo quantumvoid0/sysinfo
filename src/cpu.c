@@ -99,3 +99,25 @@ void load() {
     }
 }
 
+
+float get_core_freq(int core_num) {
+    char path[128];
+    snprintf(path, sizeof(path),
+             "/sys/devices/system/cpu/cpu%d/cpufreq/scaling_cur_freq",
+             core_num);
+
+    FILE *fp = fopen(path, "r");
+    if (!fp) {
+        perror("fopen");
+        return -1.0f;
+    }
+
+    long freq_khz;
+    if (fscanf(fp, "%ld", &freq_khz) != 1) {
+        fclose(fp);
+        return -1.0f;
+    }
+    fclose(fp);
+
+    return freq_khz / 1000.0f;  // MHz
+}

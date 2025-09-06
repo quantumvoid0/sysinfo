@@ -27,6 +27,7 @@ int main(int argc, char **argv) {
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
         printf("  cpu [load]                 : cpu load info\n");
+        printf("  cpufreq [core number]      : cpu freq by core number\n");
         printf("  time [12/24]               : time\n");
         printf("  date [1/2/3]               : date\n\n");
         printf("Commands: [arg3]\n");        
@@ -65,13 +66,21 @@ int main(int argc, char **argv) {
         cpucores();
     };
     if (strcmp(argv[1],"cpufreq") == 0 || strcmp(argv[1],"freq") == 0 || strcmp(argv[1],"cpufrequency") == 0 || strcmp(argv[1],"frequency") == 0) {
-        cpufreq();
-    };
+        if (argc == 3) {
+            int core = atoi(argv[2]);
+            float freq = get_core_freq(core);
+            if (freq > 0)
+                printf("Core %d frequency: %.3f MHz\n", core, freq);
+            else
+                printf("Failed to read core %d frequency\n", core);
+        } else {
+            cpufreq();   //fallback 
+        }
+    }
     if (strcmp(argv[1], "mem") == 0 || strcmp(argv[1], "memory") == 0 || strcmp(argv[1], "ram") == 0) {
         if (argc == 2) {
             ram();
         }
-        // Case: "mem total/left/used"
         else if (argc >= 3) {
             if (strcmp(argv[2], "total") == 0) {
                 if (argc == 3) {
@@ -168,6 +177,12 @@ int main(int argc, char **argv) {
     if (strcmp(argv[1],"fetch") == 0) {
         system("fetch");
     };
+
+    if (strcmp(argv[1],"1") == 0) {
+        float freq = get_core_freq(1);
+        if (freq > 0)
+            printf("Core 2 frequency: %.3f MHz\n", freq);
+    }
 
     return 0;
 };

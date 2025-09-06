@@ -1,4 +1,5 @@
 {
-    "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram total","cores"]
+    "commands": ["os","kernel","host","uptime","cpu","me","ram total","swap total val","cores"]
 }
-
+// any argument from `sys` is valid , you can check all valid arguments by typing in `sys` into your terminal
+// NOTE : the `sys fetch` and `sys live` arguments do not work with fetch so dont include it here as it will only break the application 
