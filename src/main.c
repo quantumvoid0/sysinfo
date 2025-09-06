@@ -32,7 +32,8 @@ int main(int argc, char **argv) {
         printf("  date [1/2/3]               : date\n\n");
         printf("Commands: [arg3]\n");        
         printf("  ram [total/used/left] [val]      : ram info with only values\n");
-        printf("  swap [total/used/left] [val]     : swap info with only values\n\n");
+        printf("  swap [total/used/left] [val]     : swap info with only values\n");
+        printf("  cpu load [core number]           : cpu load info\n");
         printf("Examples:\n");
         printf("  sys os\n");
         printf("  sys swap left val\n");
@@ -55,12 +56,20 @@ int main(int argc, char **argv) {
         uptime();
     };
     if (strcmp(argv[1],"cpu") == 0) {
-        if (argc<=2) {
+        if (argc == 2) {
             cpu();
-        } else if (strcmp(argv[2],"load") == 0) {
-            load();
-        };
-    };
+        } 
+        else if (argc >= 3 && strcmp(argv[2],"load") == 0) {
+            if (argc == 3) {
+                load();  
+            } 
+            else if (argc == 4) {
+                int core = atoi(argv[3]);
+                load_core(core); 
+            }
+        }
+    };  
+
 
     if (strcmp(argv[1],"cpucores") == 0 || strcmp(argv[1],"cores") == 0 || strcmp(argv[1],"core") == 0 || strcmp(argv[1],"cpucore") == 0) {
         cpucores();

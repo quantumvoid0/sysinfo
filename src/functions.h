@@ -21,6 +21,7 @@ void cpu();
 void cpucores();
 void cpufreq();
 void load();
+void load_core();
 void read_cpu_stats();
 float get_core_freq(int core_num);    
 

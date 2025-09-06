@@ -99,6 +99,37 @@ void load() {
     }
 }
 
+void load_core(int core_num) {
+    cpu_stat prev[CORES], curr[CORES];
+    int i, cores = sysconf(_SC_NPROCESSORS_ONLN);
+
+    if (core_num >= cores || core_num < 0) {
+        printf("Invalid core number %d\n", core_num);
+        return;
+    }
+
+    read_cpu_stats(prev, cores);
+    usleep(100000); 
+    read_cpu_stats(curr, cores);
+
+    unsigned long long prev_idle = prev[core_num].idle + prev[core_num].iowait;
+    unsigned long long curr_idle = curr[core_num].idle + curr[core_num].iowait;
+
+    unsigned long long prev_total = prev[core_num].user + prev[core_num].nice + prev[core_num].system +
+                                   prev[core_num].idle + prev[core_num].iowait + prev[core_num].irq +
+                                   prev[core_num].softirq + prev[core_num].steal;
+
+    unsigned long long curr_total = curr[core_num].user + curr[core_num].nice + curr[core_num].system +
+                                   curr[core_num].idle + curr[core_num].iowait + curr[core_num].irq +
+                                   curr[core_num].softirq + curr[core_num].steal;
+
+    unsigned long long total_diff = curr_total - prev_total;
+    unsigned long long idle_diff = curr_idle - prev_idle;
+
+    double usage = (double)(total_diff - idle_diff) / total_diff * 100.0;
+    printf("Core %d: %.2f%%\n", core_num, usage);
+}
+
 
 float get_core_freq(int core_num) {
     char path[128];
@@ -119,5 +150,5 @@ float get_core_freq(int core_num) {
     }
     fclose(fp);
 
-    return freq_khz / 1000.0f;  // MHz
+    return freq_khz / 1000.0f;  
 }
