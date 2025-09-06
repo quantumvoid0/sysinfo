@@ -28,6 +28,8 @@ int main(int argc, char **argv) {
         printf("  bios     : bios info\n");
         printf("  system   : system info\n");
         printf("  board    : motherboard info\n");
+        printf("  init     : init system info\n");
+        printf("  proc     : list all processes\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
@@ -37,6 +39,7 @@ int main(int argc, char **argv) {
         printf("  bios [vendor/version/date] : bios info\n");
         printf("  system [family]            : system family info\n");
         printf("  board [name]               : motherboard name\n");
+        printf("  proc [num]                 : list number of processes\n");
         printf("  time [12/24]               : time\n");
         printf("  date [1/2/3]               : date\n\n");
         printf("Commands: [arg3]\n");        
@@ -244,6 +247,19 @@ int main(int argc, char **argv) {
             }
         }
     }
+    if (strcmp(argv[1], "init") == 0) {
+        system("ps -p 1 -o comm=");
+    }
+    if (strcmp(argv[1], "ps") == 0 || strcmp(argv[1], "proc") == 0) {
+        if (argc == 2) {
+            system("ps -eo pid,comm --sort=pid");
+        } else if (argc > 2) {
+            if (strcmp(argv[2], "num") == 0) {
+                system("ps -e | wc -l");
+            }
+        }
+    }
+
 
 
 
