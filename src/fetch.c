@@ -21,6 +21,15 @@ const char* get_icon(const char *cmd) {
     if (strcmp(cmd, "root") == 0) return " ";
     if (strcmp(cmd, "me") == 0) return " ";
     if (strcmp(cmd, "time") == 0) return "󰥔 ";
+    if (strcmp(cmd, "date") == 0) return " ";
+    if (strcmp(cmd, "shell") == 0) return " ";
+    if (strcmp(cmd, "term") == 0) return " ";
+    if (strcmp(cmd, "ip") == 0) return "󰩟 ";
+    if (strcmp(cmd, "bios") == 0) return " ";
+    if (strcmp(cmd, "system") == 0) return "󰌢 ";
+    if (strcmp(cmd, "board") == 0) return "󰚗 ";
+
+
     return "";
 }
 

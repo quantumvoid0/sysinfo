@@ -59,6 +59,12 @@ Commands: <arg1>
   fetch    : fetches sys info (beta)
   time     : time
   date     : date
+  shell    : shell name
+  term     : terminal name
+  ip       : local ip
+  bios     : bios info
+  system   : system info
+  board    : motherboard info
   me       : user info
 
 Commands: [arg2]
@@ -66,6 +72,9 @@ Commands: [arg2]
   swap [total/used/left]     : swap info
   cpu [load]                 : cpu load info
   cpufreq [core number]      : cpu freq by core number
+  bios [vendor/version/date] : bios info
+  system [family]            : system family info
+  board [name]               : motherboard name
   time [12/24]               : time
   date [1/2/3]               : date
 

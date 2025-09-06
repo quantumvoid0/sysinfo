@@ -22,12 +22,21 @@ int main(int argc, char **argv) {
         printf("  fetch    : fetches sys info (beta)\n");
         printf("  time     : time\n");
         printf("  date     : date\n");
+        printf("  shell    : shell name\n");
+        printf("  term     : terminal name\n");
+        printf("  ip       : local ip\n");
+        printf("  bios     : bios info\n");
+        printf("  system   : system info\n");
+        printf("  board    : motherboard info\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
         printf("  cpu [load]                 : cpu load info\n");
         printf("  cpufreq [core number]      : cpu freq by core number\n");
+        printf("  bios [vendor/version/date] : bios info\n");
+        printf("  system [family]            : system family info\n");
+        printf("  board [name]               : motherboard name\n");
         printf("  time [12/24]               : time\n");
         printf("  date [1/2/3]               : date\n\n");
         printf("Commands: [arg3]\n");        
@@ -192,6 +201,51 @@ int main(int argc, char **argv) {
         if (freq > 0)
             printf("Core 2 frequency: %.3f MHz\n", freq);
     }
+
+    if (strcmp(argv[1],"shell") == 0) {
+        system("echo ${SHELL##*/}");
+    };
+    if (strcmp(argv[1],"term") == 0) {
+        system("echo $TERM");
+    };
+    if (strcmp(argv[1],"ip") == 0) {
+        system("ip route get 1.1.1.1 | awk '{print $7}'");
+    };
+    if (strcmp(argv[1], "bios") == 0) {
+        if (argc == 2) {
+            system("cat /sys/devices/virtual/dmi/id/bios_vendor");
+        } else if (argc > 2) {
+            if (strcmp(argv[2], "vendor") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/bios_vendor");
+            } else if (strcmp(argv[2], "version") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/bios_version");
+            } else if (strcmp(argv[2], "date") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/bios_date");
+            } else {
+                printf("Usage: %s bios [vendor|version|date]\n", argv[0]);
+            }
+        }
+    }
+    if (strcmp(argv[1], "system") == 0) {
+        if (argc == 2) {
+            system("cat /sys/devices/virtual/dmi/id/product_name");
+        } else if (argc > 2) {
+            if (strcmp(argv[2], "family") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/product_family");
+            }
+        }
+    }
+    if (strcmp(argv[1], "board") == 0) {
+        if (argc == 2) {
+            system("cat /sys/devices/virtual/dmi/id/board_vendor");
+        } else if (argc > 2) {
+            if (strcmp(argv[2], "name") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/board_name");
+            }
+        }
+    }
+
+
 
     return 0;
 };
