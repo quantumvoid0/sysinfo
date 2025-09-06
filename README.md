@@ -1,4 +1,4 @@
-# 👨‍💻 Sysinfo
+# 👨‍💻 Sysinfo [under development]
 **Sysinfo; because your system deserves the spotlight. Specs, stats & performance at a glance**
 
 ---
