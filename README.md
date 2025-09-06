@@ -23,14 +23,14 @@
 
 ## 💾 Installation & Uninstallation
 
-**To install Better Fetch run the commands as give below**
+**To install Sysinfo run the commands as give below**
 ```fish
 git clone https://github.com/quantumvoid0/sysinfo
 cd sysinfo
 ./setup.sh install
 ```
 
-**To uninstall Better Fetch run the commands as give below**
+**To uninstall Sysinfo run the commands as give below**
 ```fish
 git clone https://github.com/quantumvoid0/sysinfo
 cd sysinfo
