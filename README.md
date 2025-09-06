@@ -72,7 +72,7 @@ Commands: [arg2]
 Commands: [arg3]
   ram [total/used/left] [val]      : ram info with only values
   swap [total/used/left] [val]     : swap info with only values
-
+  cpu load [core number]           : cpu load info
 Examples:
   sys os
   sys swap left val
