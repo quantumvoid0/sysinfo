@@ -1,17 +1,14 @@
-# 👨‍💻 Sysinfo [under development]
+# 👨‍💻 Sysinfo
 **Sysinfo; because your system deserves the spotlight. Specs, stats & performance at a glance**
 
 ---
 
->[!WARNING]
->`sys live` & `sys fetch` toos are under work and in beta, things might not render correctly or break. you are free to try it out tho.
-
 > [!IMPORTANT]
 > 🚧 This project is under active development. Contributions, feature requests, ideas, and testers are welcome!
+> 
 > ❗ More features coming soon!!
 
 ---
-
 
 ## ✨ Features
 
