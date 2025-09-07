@@ -154,9 +154,13 @@ fetch is configured in ~/.config/sysinfo/config.json
 - fetch is configured in `~/.config/sysinfo/config.json`
 - formatting is as give below
   ```json
-  {
-    "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram total","cores"]
+{
+  "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram used","cores"],
+  "colors": {
+    "ascii": "white",
   }
+}
+
   ```
 - you can mix and match all `sys` commands in there to display each
 

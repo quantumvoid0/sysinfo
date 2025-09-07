@@ -30,9 +30,19 @@ const char* get_icon(const char *cmd) {
     if (strcmp(cmd, "board") == 0) return "󰚗 ";
     if (strcmp(cmd, "init") == 0) return " ";
     if (strcmp(cmd, "proc") == 0) return " ";
-
-
     return "";
+}
+
+const char* get_color(const char* name) {
+    if (!name) return "\033[0m";
+    if (strcasecmp(name, "red") == 0) return "\033[31m";
+    if (strcasecmp(name, "green") == 0) return "\033[32m";
+    if (strcasecmp(name, "yellow") == 0) return "\033[33m";
+    if (strcasecmp(name, "blue") == 0) return "\033[34m";
+    if (strcasecmp(name, "magenta") == 0) return "\033[35m";
+    if (strcasecmp(name, "cyan") == 0) return "\033[36m";
+    if (strcasecmp(name, "white") == 0) return "\033[37m";
+    return "\033[0m";
 }
 
 int load_ascii(const char *path, char ascii[][512], int max_lines) {
@@ -78,6 +88,33 @@ int load_commands_from_config(char commands[][64], int max_commands, const char 
     return count;
 }
 
+int load_ascii_color_from_config(const char *config_path, char *color_name, int max_len) {
+    FILE *fp = fopen(config_path, "r");
+    if (!fp) return 0;
+    char line[256];
+    while (fgets(line, sizeof(line), fp)) {
+        char *start = strstr(line, "\"ascii\"");
+        if (start) {
+            start = strchr(line, ':');
+            if (start) {
+                start++;
+                while (*start == ' ' || *start == '\"') start++;
+                char *end = strpbrk(start, "\",");
+                if (end) {
+                    int len = end - start;
+                    if (len >= max_len) len = max_len - 1;
+                    strncpy(color_name, start, len);
+                    color_name[len] = 0;
+                    fclose(fp);
+                    return 1;
+                }
+            }
+        }
+    }
+    fclose(fp);
+    return 0;
+}
+
 int is_known_os(const char *os, OSAscii os_list[], int os_count) {
     for (int i = 0; i < os_count; i++) {
         if (strcasecmp(os, os_list[i].keyword) == 0) return 1;
@@ -101,6 +138,10 @@ int main(int argc, char **argv) {
         for(int i=0;i<n;i++) strncpy(commands[i], default_commands[i], 63);
     }
 
+    char ascii_color[16] = "reset";
+    load_ascii_color_from_config(config_path, ascii_color, sizeof(ascii_color));
+    const char* color_code = get_color(ascii_color);
+
     char outputs[20][256];
     char last_os[256] = {0};
 
@@ -112,17 +153,14 @@ int main(int argc, char **argv) {
         snprintf(cmd, sizeof(cmd), "sys %s", commands[i]);
         FILE *fp = popen(cmd, "r");
         if (!fp) continue;
-    
+
         if (fgets(outputs[i], sizeof(outputs[i]), fp)) {
             outputs[i][strcspn(outputs[i], "\n")] = 0;
-    
             if (strcmp(commands[i], "os") == 0)
                 strncpy(last_os, outputs[i], sizeof(last_os)-1);
         }
-    
         pclose(fp);
     }
-
 
     OSAscii os_list[] = {
         {"Gentoo", "/usr/share/sysinfo/gentoo.ascii"},
@@ -166,23 +204,23 @@ int main(int argc, char **argv) {
 
     int max_lines = ascii_lines > n ? ascii_lines : n;
     for (int i = 0; i < max_lines; i++) {
+        // ASCII with color
         if (i < ascii_lines)
-            printf("%-22s", ascii[i]);
+            printf("%s%-22s\033[0m", color_code, ascii[i]);
         else
-            printf("%-22s", ""); 
-    
-        
+            printf("%-22s", "");
+
+        // Command output plain
         if (i < n) {
             char cmd_copy[64];
             strncpy(cmd_copy, commands[i], sizeof(cmd_copy)-1);
             cmd_copy[sizeof(cmd_copy)-1] = 0;
             char *first_word = strtok(cmd_copy, " ");
-    
             printf("%s %-14s • %s\n", get_icon(first_word), commands[i], outputs[i]);
         } else {
             printf("\n");
+        }
     }
-}
 
     if (argc > 1) {
         if (!is_known_os(argv[1], os_list, os_count)) {
