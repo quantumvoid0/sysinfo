@@ -25,7 +25,6 @@
 <summary><b>Dependencies</b></summary>
 
 ## 😃 Dependencies
-- this section exists due to...well certain someone
 - dependencies are as listed below :
   - linux
   - gcc
@@ -37,7 +36,13 @@
 
 - please ensure dependencies are installed before installing
 
+<details>
+<summary>Stable</summary>
+
+---
+
 **To install Sysinfo run the commands as give below**
+
 ```fish
 git clone https://github.com/quantumvoid0/sysinfo
 cd sysinfo
@@ -50,6 +55,35 @@ git clone https://github.com/quantumvoid0/sysinfo
 cd sysinfo
 ./setup.sh uninstall
 ```
+
+---
+
+</details>
+
+<details>
+<summary>Unstable (testing branch)</summary>
+  
+---
+  
+**To install Sysinfo run the commands as give below**
+  
+```fish
+git clone --branch unstable https://github.com/quantumvoid0/sysinfo
+cd sysinfo
+./setup.sh install
+```
+
+**To uninstall Sysinfo run the commands as give below**
+
+```fish
+git clone --branch unstable https://github.com/quantumvoid0/sysinfo
+cd sysinfo
+./setup.sh uninstall
+```
+
+---
+
+</details>
 
 > [!TIP]
 > **Security conscious?** You can review the installer script [here](https://raw.githubusercontent.com/quantumvoid0/sysinfo/refs/heads/main/setup.sh) before running it.
