@@ -30,6 +30,7 @@ int main(int argc, char **argv) {
         printf("  board    : motherboard info\n");
         printf("  init     : init system info\n");
         printf("  proc     : list all processes\n");
+        printf("  ping     : check latency\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
@@ -283,6 +284,10 @@ int main(int argc, char **argv) {
         }
         } 
 
+    }
+
+    if (strcmp(argv[1], "ping") == 0) {
+        system("ping -c 1 1.1.1.1 | awk -F'=' '/time/{print $4}'");
     }
 
 
