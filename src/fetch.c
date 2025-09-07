@@ -78,6 +78,13 @@ int load_commands_from_config(char commands[][64], int max_commands, const char 
     return count;
 }
 
+int is_known_os(const char *os, OSAscii os_list[], int os_count) {
+    for (int i = 0; i < os_count; i++) {
+        if (strcasecmp(os, os_list[i].keyword) == 0) return 1;
+    }
+    return 0;
+}
+
 int main(int argc, char **argv) {
     char config_path[512];
     const char *xdg = getenv("XDG_CONFIG_HOME");
@@ -177,6 +184,15 @@ int main(int argc, char **argv) {
     }
 }
 
+    if (argc > 1) {
+        if (!is_known_os(argv[1], os_list, os_count)) {
+            printf("Usage: %s [OS]\n", argv[0]);
+            printf("Available OS options:\n");
+            for (int i = 0; i < os_count; i++)
+                printf("  %s\n", os_list[i].keyword);
+            return 1;
+        }
+    }
 
     return 0;
 }
