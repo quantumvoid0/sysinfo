@@ -28,6 +28,8 @@ const char* get_icon(const char *cmd) {
     if (strcmp(cmd, "bios") == 0) return " ";
     if (strcmp(cmd, "system") == 0) return "󰌢 ";
     if (strcmp(cmd, "board") == 0) return "󰚗 ";
+    if (strcmp(cmd, "init") == 0) return " ";
+    if (strcmp(cmd, "proc") == 0) return " ";
 
 
     return "";
