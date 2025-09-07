@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <dirent.h>
+#include <ctype.h>
 
 #define INFO_COL 35
 
@@ -58,7 +60,31 @@ int load_ascii(const char *path, char ascii[][512], int max_lines) {
     return count;
 }
 
-typedef struct { const char *keyword; const char *ascii_path; } OSAscii;
+typedef struct { char keyword[64]; char ascii_path[512]; } OSAscii;
+
+int scan_ascii_dir(const char *dir_path, OSAscii os_list[], int max_os) {
+    DIR *d = opendir(dir_path);
+    if (!d) return 0;
+    struct dirent *entry;
+    int count = 0;
+    while ((entry = readdir(d)) != NULL && count < max_os) {
+        if (strstr(entry->d_name, ".ascii")) {
+            snprintf(os_list[count].ascii_path, sizeof(os_list[count].ascii_path),
+                     "%s/%s", dir_path, entry->d_name);
+
+            strncpy(os_list[count].keyword, entry->d_name, sizeof(os_list[count].keyword)-1);
+            os_list[count].keyword[sizeof(os_list[count].keyword)-1] = 0;
+
+            char *dot = strrchr(os_list[count].keyword, '.');
+            if (dot) *dot = 0;
+
+            os_list[count].keyword[0] = toupper(os_list[count].keyword[0]);
+            count++;
+        }
+    }
+    closedir(d);
+    return count;
+}
 
 int load_commands_from_config(char commands[][64], int max_commands, const char *config_path) {
     FILE *fp = fopen(config_path, "r");
@@ -116,13 +142,6 @@ int load_ascii_color_from_config(const char *config_path, char *color_name, int 
     return 0;
 }
 
-int is_known_os(const char *os, OSAscii os_list[], int os_count) {
-    for (int i = 0; i < os_count; i++) {
-        if (strcasecmp(os, os_list[i].keyword) == 0) return 1;
-    }
-    return 0;
-}
-
 int main(int argc, char **argv) {
     char config_path[512];
     const char *xdg = getenv("XDG_CONFIG_HOME");
@@ -146,9 +165,6 @@ int main(int argc, char **argv) {
     char outputs[20][256];
     char last_os[256] = {0};
 
-    if (argc > 1)
-        current_cmd = argv[1];
-
     for (int i = 0; i < n; i++) {
         char cmd[256];
         snprintf(cmd, sizeof(cmd), "sys %s", commands[i]);
@@ -163,55 +179,57 @@ int main(int argc, char **argv) {
         pclose(fp);
     }
 
-    OSAscii os_list[] = {
-        {"Gentoo", "/usr/share/sysinfo/gentoo.ascii"},
-        {"Arch", "/usr/share/sysinfo/arch.ascii"},
-        {"Fedora", "/usr/share/sysinfo/fedora.ascii"},
-        {"Debian", "/usr/share/sysinfo/debian.ascii"},
-        {"Mint", "/usr/share/sysinfo/mint.ascii"},
-        {"Ubuntu", "/usr/share/sysinfo/ubuntu.ascii"},
-        {"Manjaro","/usr/share/sysinfo/manjaro.ascii"},
-        {"Pop","/usr/share/sysinfo/pop.ascii"},
-        {"Zorin","/usr/share/sysinfo/zorin.ascii"},
-        {"Elementary","/usr/share/sysinfo/elementary.ascii"},
-        {"MX","/usr/share/sysinfo/mx.ascii"},
-        {"Endeavour","/usr/share/sysinfo/endeavour.ascii"},
-        {"Kali","/usr/share/sysinfo/kali.ascii"},
-    };
+    OSAscii os_list[64];
+    int os_count = scan_ascii_dir("/usr/share/sysinfo", os_list, 64);
+    if (argc > 1 && strcasecmp(argv[1], "os") == 0) {
+        printf("Available OS logos:\n\n");
+        for (int i = 0; i < os_count; i++) {
+            printf("  - %s\n", os_list[i].keyword);
+        }
+        return 0;
+    }
+
 
     char ascii[50][512];
     int ascii_lines = 0;
     char logo_override[64] = {0};
-    if (argc > 1) strncpy(logo_override, argv[1], sizeof(logo_override)-1);
 
-    int os_count = sizeof(os_list)/sizeof(os_list[0]);
-    if (strlen(logo_override)) {
-        for (int i = 0; i < os_count; i++) {
-            if (strcasecmp(logo_override, os_list[i].keyword) == 0) {
-                ascii_lines = load_ascii(os_list[i].ascii_path, ascii, 50);
-                break;
-            }
-        }
+    if (argc > 1) {
+        strncpy(logo_override, argv[1], sizeof(logo_override)-1);
+    } else {
+        strncpy(logo_override, last_os, sizeof(logo_override)-1);
     }
 
+    for (int i = 0; i < os_count; i++) {
+        if (strcasestr(logo_override, os_list[i].keyword)) {
+            ascii_lines = load_ascii(os_list[i].ascii_path, ascii, 50);
+            break;
+        }
+    }
+    
     if (ascii_lines == 0) {
-        for (int i = 0; i < os_count; i++) {
-            if (strstr(last_os, os_list[i].keyword)) {
-                ascii_lines = load_ascii(os_list[i].ascii_path, ascii, 50);
-                break;
+        printf("OS '%s' not found in sysinfo database.\n", logo_override);
+        printf("Run 'sys fetch os' to see available logos.\n");
+        printf("Falling back to system default...\n\n");
+    
+        if (strlen(last_os) > 0) {
+            for (int i = 0; i < os_count; i++) {
+                if (strcasestr(last_os, os_list[i].keyword)) {
+                    ascii_lines = load_ascii(os_list[i].ascii_path, ascii, 50);
+                    break;
+                }
             }
         }
     }
+
 
     int max_lines = ascii_lines > n ? ascii_lines : n;
     for (int i = 0; i < max_lines; i++) {
-        // ASCII with color
         if (i < ascii_lines)
             printf("%s%-22s\033[0m", color_code, ascii[i]);
         else
             printf("%-22s", "");
 
-        // Command output plain
         if (i < n) {
             char cmd_copy[64];
             strncpy(cmd_copy, commands[i], sizeof(cmd_copy)-1);
@@ -220,16 +238,6 @@ int main(int argc, char **argv) {
             printf("%s %-14s • %s\n", get_icon(first_word), commands[i], outputs[i]);
         } else {
             printf("\n");
-        }
-    }
-
-    if (argc > 1) {
-        if (!is_known_os(argv[1], os_list, os_count)) {
-            printf("Usage: %s [OS]\n", argv[0]);
-            printf("Available OS options:\n");
-            for (int i = 0; i < os_count; i++)
-                printf("  %s\n", os_list[i].keyword);
-            return 1;
         }
     }
 
