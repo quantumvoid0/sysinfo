@@ -29,6 +29,7 @@
   - linux
   - gcc
   - ncurses
+  - nerd fonts for icons
   
 </details>
 
@@ -116,6 +117,7 @@ Commands: <arg1>
   board    : motherboard info
   init     : init system info
   proc     : list all processes
+  ping     : check latency
   me       : user info
 
 Commands: [arg2]
