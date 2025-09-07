@@ -89,6 +89,7 @@ cd sysinfo
 > **Security conscious?** You can review the installer script [here](https://raw.githubusercontent.com/quantumvoid0/sysinfo/refs/heads/main/setup.sh) before running it.
 
 ## 🫴 Usage
+
 ```
 Usage: sys <arg1> [arg2] [arg3]
 
@@ -113,23 +114,26 @@ Commands: <arg1>
   bios     : bios info
   system   : system info
   board    : motherboard info
+  init     : init system info
+  proc     : list all processes
   me       : user info
 
 Commands: [arg2]
   ram [total/used/left]      : ram info
   swap [total/used/left]     : swap info
   cpu [load]                 : cpu load info
-  cpufreq [core number]      : cpu freq by core number
+  cpufreq (core number)      : cpu freq by core number
   bios [vendor/version/date] : bios info
   system [family]            : system family info
   board [name]               : motherboard name
+  proc [num]                 : list number of processes
   time [12/24]               : time
   date [1/2/3]               : date
 
 Commands: [arg3]
   ram [total/used/left] [val]      : ram info with only values
   swap [total/used/left] [val]     : swap info with only values
-  cpu load [core number]           : cpu load info
+  cpu load (core number)           : cpu load info
 Examples:
   sys os
   sys swap left val
@@ -137,6 +141,7 @@ Examples:
 
 fetch is configured in ~/.config/sysinfo/config.json
 ```
+
 - If you have any questions on how to use or what something does , feel free to open a discussion
 
 **usage of `sys live`**

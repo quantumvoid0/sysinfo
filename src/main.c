@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
         printf("  cpu [load]                 : cpu load info\n");
-        printf("  cpufreq [core number]      : cpu freq by core number\n");
+        printf("  cpufreq (core number)      : cpu freq by core number\n");
         printf("  bios [vendor/version/date] : bios info\n");
         printf("  system [family]            : system family info\n");
         printf("  board [name]               : motherboard name\n");
@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
         printf("Commands: [arg3]\n");        
         printf("  ram [total/used/left] [val]      : ram info with only values\n");
         printf("  swap [total/used/left] [val]     : swap info with only values\n");
-        printf("  cpu load [core number]           : cpu load info\n");
+        printf("  cpu load (core number)           : cpu load info\n");
         printf("Examples:\n");
         printf("  sys os\n");
         printf("  sys swap left val\n");
@@ -78,8 +78,11 @@ int main(int argc, char **argv) {
             else if (argc == 4) {
                 int core = atoi(argv[3]);
                 load_core(core); 
-            }
-        }
+            } 
+
+        } else {
+            printf("usage : cpu [load]\nusage : cpu load (core number)\nfor (core number) , actually enter a number starting from 0\n");
+        };
     };  
 
 
@@ -108,21 +111,29 @@ int main(int argc, char **argv) {
                     ram_total();
                 } else if (argc == 4 && strcmp(argv[3], "val") == 0) {
                     ram_total_val();
-                }
+                } else {
+                     printf("usage : sys ram total val\n");
+                };
             } 
             else if (strcmp(argv[2], "left") == 0) {
                 if (argc == 3) {
                     ram_left();
                 } else if (argc == 4 && strcmp(argv[3], "val") == 0) {
                     ram_left_val();
-                }
+                } else {
+                     printf("usage : sys ram left val\n");
+                };
             } 
             else if (strcmp(argv[2], "used") == 0) {
                 if (argc == 3) {
                     ram_used();
                 } else if (argc == 4 && strcmp(argv[3], "val") == 0) {
                     ram_used_val();
-                }
+                } else {
+                     printf("usage : sys ram used val\n");
+                };
+            } else {
+                printf("usage : sys ram [total/left/used]\nusage : sys ram [total/left/used] val\n");
             }
         }
     }
@@ -137,6 +148,8 @@ int main(int argc, char **argv) {
                     swap_total();
                 } else if (argc == 4 && strcmp(argv[3], "val") == 0) {
                     swap_total_val();
+                } else {
+                     printf("usage : sys swap total val\n");
                 }
             } 
             else if (strcmp(argv[2], "left") == 0) {
@@ -144,6 +157,8 @@ int main(int argc, char **argv) {
                     swap_left();
                 } else if (argc == 4 && strcmp(argv[3], "val") == 0) {
                     swap_left_val();
+                } else {
+                     printf("usage : sys swap left val\n");
                 }
             } 
             else if (strcmp(argv[2], "used") == 0) {
@@ -151,7 +166,11 @@ int main(int argc, char **argv) {
                     swap_used();
                 } else if (argc == 4 && strcmp(argv[3], "val") == 0) {
                     swap_used_val();
+                } else {
+                     printf("usage : sys swap used val\n");
                 }
+            } else {
+                printf("usage : sys swap [total/left/used]\nusage : sys ram [total/left/used] val\n");
             }
         }
     }
@@ -195,14 +214,13 @@ int main(int argc, char **argv) {
     }
 
 
-    if (strcmp(argv[1],"fetch") == 0) {
-        system("fetch");
-    };
-
-    if (strcmp(argv[1],"1") == 0) {
-        float freq = get_core_freq(1);
-        if (freq > 0)
-            printf("Core 2 frequency: %.3f MHz\n", freq);
+    if (strcmp(argv[1], "fetch") == 0) {
+        char cmd[256] = "fetch";
+        for (int i = 2; i < argc; i++) {
+            strncat(cmd, " ", sizeof(cmd)-strlen(cmd)-1);
+            strncat(cmd, argv[i], sizeof(cmd)-strlen(cmd)-1);
+        }
+        system(cmd);
     }
 
     if (strcmp(argv[1],"shell") == 0) {
@@ -225,7 +243,7 @@ int main(int argc, char **argv) {
             } else if (strcmp(argv[2], "date") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/bios_date");
             } else {
-                printf("Usage: %s bios [vendor|version|date]\n", argv[0]);
+                printf("Usage: sys bios [vendor|version|date]\n", argv[0]);
             }
         }
     }
@@ -235,8 +253,10 @@ int main(int argc, char **argv) {
         } else if (argc > 2) {
             if (strcmp(argv[2], "family") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/product_family");
-            }
+            }else {
+                printf("Usage: sys system [family]\n", argv[0]);
         }
+        } 
     }
     if (strcmp(argv[1], "board") == 0) {
         if (argc == 2) {
@@ -244,7 +264,9 @@ int main(int argc, char **argv) {
         } else if (argc > 2) {
             if (strcmp(argv[2], "name") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/board_name");
-            }
+            } else {
+                printf("Usage: sys board [name]\n", argv[0]);
+        }
         }
     }
     if (strcmp(argv[1], "init") == 0) {
@@ -256,8 +278,11 @@ int main(int argc, char **argv) {
         } else if (argc > 2) {
             if (strcmp(argv[2], "num") == 0) {
                 system("ps -e | wc -l");
-            }
+            } else {
+                printf("Usage: sys proc [num]\n(dont enter a number, just enter \"num\" for [num]\n", argv[0]);
         }
+        } 
+
     }
 
 
