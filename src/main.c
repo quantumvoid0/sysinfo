@@ -31,6 +31,7 @@ int main(int argc, char **argv) {
         printf("  init     : init system info\n");
         printf("  proc     : list all processes\n");
         printf("  ping     : check latency\n");
+	printf("  editor   : editor name (only if $EDITOR var is set)\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
@@ -55,6 +56,10 @@ int main(int argc, char **argv) {
 
         return 1;
     }
+
+    if (strcmp(argv[1],"editor") == 0) {
+    	system("echo $EDITOR");
+    };
 
     if (strcmp(argv[1],"os") == 0) {
         os();

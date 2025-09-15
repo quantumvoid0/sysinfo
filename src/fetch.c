@@ -33,6 +33,7 @@ const char* get_icon(const char *cmd) {
     if (strcmp(cmd, "init") == 0) return " ";
     if (strcmp(cmd, "proc") == 0) return " ";
     if (strcmp(cmd, "ping") == 0) return " ";
+    if (strcmp(cmd, "editor") == 0) return "󰯂 ";
     return "";
 }
 
