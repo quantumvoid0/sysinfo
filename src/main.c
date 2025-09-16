@@ -37,8 +37,9 @@ int main(int argc, char **argv) {
 	printf("  region   : returns region\n");
 	printf("  encoding : returns encoding\n");
         printf("  me       : user info\n\n");
+        printf("  update       : update current version to the latest\n");
 	printf("  version  	 : installed sysinfo version\n");
-	printf("  version latest : latest available sysinfo version\n\n");
+	printf("  version-latest : latest available sysinfo version\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
