@@ -1,5 +1,5 @@
 {
-  "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram used","cores"],
+  "commands": ["os","kernel","host","uptime","cpu","me","swap total","ram used","lang"],
   "colors": {
     "ascii": "white",
   }

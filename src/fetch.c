@@ -34,6 +34,10 @@ const char* get_icon(const char *cmd) {
     if (strcmp(cmd, "proc") == 0) return " ";
     if (strcmp(cmd, "ping") == 0) return " ";
     if (strcmp(cmd, "editor") == 0) return "󰯂 ";
+    if (strcmp(cmd, "language") == 0) return " ";
+    if (strcmp(cmd, "region") == 0) return "󰇧 ";
+    if (strcmp(cmd, "encoding") == 0) return "󱘣 ";
+    if (strcmp(cmd, "lang") == 0) return " ";
     return "";
 }
 

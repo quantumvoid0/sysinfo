@@ -32,6 +32,10 @@ int main(int argc, char **argv) {
         printf("  proc     : list all processes\n");
         printf("  ping     : check latency\n");
 	printf("  editor   : editor name (only if $EDITOR var is set)\n");
+ 	printf("  lang     : returns LANG var\n");
+ 	printf("  language : returns language\n");
+	printf("  region   : returns region\n");
+	printf("  encoding : returns encoding\n");
         printf("  me       : user info\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
@@ -59,6 +63,22 @@ int main(int argc, char **argv) {
 
     if (strcmp(argv[1],"editor") == 0) {
     	system("echo $EDITOR");
+    };
+
+    if (strcmp(argv[1],"language") == 0) {
+    	system("echo $LANG | cut -d_ -f1");
+    };
+
+    if (strcmp(argv[1],"region") == 0) {
+    	system("echo $LANG | cut -d_ -f2 | cut -d. -f1");
+    };
+
+    if (strcmp(argv[1],"encoding") == 0) {
+    	system("echo $LANG | cut -d. -f2");
+    };
+
+    if (strcmp(argv[1],"lang") == 0) {
+    	system("echo $LANG");
     };
 
     if (strcmp(argv[1],"os") == 0) {
