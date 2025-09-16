@@ -37,6 +37,8 @@ int main(int argc, char **argv) {
 	printf("  region   : returns region\n");
 	printf("  encoding : returns encoding\n");
         printf("  me       : user info\n\n");
+	printf("  version  	 : installed sysinfo version\n");
+	printf("  version latest : latest available sysinfo version\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
@@ -313,6 +315,32 @@ int main(int argc, char **argv) {
 
     if (strcmp(argv[1], "ping") == 0) {
         system("ping -c 1 1.1.1.1 | awk -F'=' '/time/{print $4}'");
+    }
+
+    if (strcmp(argv[1],"version") == 0) {
+        printf("sysinfo v1.9\n");
+    }
+
+    if (strcmp(argv[1], "version-latest") == 0) {
+        FILE *fp;
+        fp = popen("curl -s https://api.github.com/repos/quantumvoid0/sysinfo/releases/latest | grep -o -m1 '\"tag_name\": *\"[^\"]*\"' | cut -d'\"' -f4","r");
+        if (!fp) return 1;
+        char ver[256];
+	if (fgets(ver,sizeof(ver),fp) == NULL || strlen(ver) < 2) {
+        printf("Please try again in a few minutes.\nYou have exceeded the API rate limit\n");
+	} else {
+	        printf("sysinfo %s",ver);
+        }
+            pclose(fp);
+        }       
+    
+
+    if (strcmp(argv[1], "update") == 0) {
+        system("git clone https://github.com/quantumvoid0/sysinfo.git");
+	chdir("sysinfo");
+	system("./setup.sh update");
+	chdir("..");
+	system("rm -rf sysinfo");
     }
 
 
