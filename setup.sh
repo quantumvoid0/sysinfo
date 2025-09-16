@@ -7,7 +7,7 @@ USER_CONFIG="$HOME/.config/sysinfo"
 ART="/usr/share/sysinfo"
 
 if [[ -z "$ACTION" ]]; then
-    echo "Usage: $0 [install|uninstall]"
+    echo "Usage: $0 [install|uninstall|update]"
     exit 1
 fi
 
@@ -46,9 +46,26 @@ elif [[ "$ACTION" == "uninstall" ]]; then
 
     echo "Uninstallation complete!"
 
+elif [[ "$ACTION" == "update" ]]; then
+    echo "Compiling binaries..."
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c -o sys
+    gcc src/live.c -o live -lncurses -ltinfo
+    gcc src/fetch.c -o fetch
+
+    echo "Updating binaries in $PREFIX/bin..."
+    sudo install -Dm755 sys "$PREFIX/bin/sys"
+    sudo install -Dm755 live "$PREFIX/bin/live"
+    sudo install -Dm755 fetch "$PREFIX/bin/fetch"
+
+    echo "Updating art in $ART..."
+    sudo mkdir -p "$ART"
+    sudo cp -r src/art/* "$ART/"
+
+    echo "Update complete!"
+
+
 else
     echo "Unknown action: $ACTION"
-    echo "Usage: $0 [install|uninstall]"
+    echo "Usage: $0 [install|uninstall|update]"
     exit 1
-fi
-
+fi                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
