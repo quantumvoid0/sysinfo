@@ -31,15 +31,15 @@ int main(int argc, char **argv) {
         printf("  init     : init system info\n");
         printf("  proc     : list all processes\n");
         printf("  ping     : check latency\n");
-	printf("  editor   : editor name (only if $EDITOR var is set)\n");
- 	printf("  lang     : returns LANG var\n");
- 	printf("  language : returns language\n");
-	printf("  region   : returns region\n");
-	printf("  encoding : returns encoding\n");
+	    printf("  editor   : editor name (only if $EDITOR var is set)\n");
+ 	    printf("  lang     : returns LANG var\n");
+ 	    printf("  language : returns language\n");
+	    printf("  region   : returns region\n");
+	    printf("  encoding : returns encoding\n");
         printf("  me       : user info\n\n");
-        printf("  update       : update current version to the latest\n");
-	printf("  version  	 : installed sysinfo version\n");
-	printf("  version-latest : latest available sysinfo version\n\n");
+     	printf("  update         : update current version to the latest\n");
+	    printf("  version  	     : installed sysinfo version\n");
+	    printf("  version-latest : latest available sysinfo version\n\n");
         printf("Commands: [arg2]\n");        
         printf("  ram [total/used/left]      : ram info\n");
         printf("  swap [total/used/left]     : swap info\n");
@@ -319,7 +319,7 @@ int main(int argc, char **argv) {
     }
 
     if (strcmp(argv[1],"version") == 0) {
-        printf("sysinfo v1.9\n");
+        printf("sysinfo v2.0\n");
     }
 
     if (strcmp(argv[1], "version-latest") == 0) {
