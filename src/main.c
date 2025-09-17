@@ -334,7 +334,7 @@ int main(int argc, char **argv) {
     }
 
     if (strcmp(argv[1],"version") == 0) {
-        printf("sysinfo v2.1\n");
+        printf("sysinfo v2.1.1\n");
     }
 
     if (strcmp(argv[1], "version-latest") == 0) {
