@@ -31,29 +31,29 @@ int main(int argc, char **argv) {
         printf("  init     : init system info\n");
         printf("  proc     : list all processes\n");
         printf("  ping     : check latency\n");
-	    printf("  editor   : editor name (only if $EDITOR var is set)\n");
- 	    printf("  lang     : returns LANG var\n");
- 	    printf("  language : returns language\n");
-	    printf("  region   : returns region\n");
-	    printf("  encoding : returns encoding\n");
+        printf("  editor   : editor name (only if $EDITOR var is set)\n");
+ 	printf("  locale   : returns locale\n");
+ 	printf("  language : returns language\n");
+	printf("  region   : returns region\n");
+	printf("  encoding : returns encoding\n");
         printf("  me       : user info\n\n");
      	printf("  update         : update current version to the latest\n");
-	    printf("  version  	     : installed sysinfo version\n");
-	    printf("  version-latest : latest available sysinfo version\n\n");
+	printf("  version  	 : installed sysinfo version\n");
+	printf("  version-latest : latest available sysinfo version\n\n");
         printf("Commands: [arg2]\n");        
-        printf("  ram [total/used/left]      : ram info\n");
-        printf("  swap [total/used/left]     : swap info\n");
-        printf("  cpu [load]                 : cpu load info\n");
-        printf("  cpufreq (core number)      : cpu freq by core number\n");
-        printf("  bios [vendor/version/date] : bios info\n");
-        printf("  system [family]            : system family info\n");
-        printf("  board [name]               : motherboard name\n");
-        printf("  proc [num]                 : list number of processes\n");
-        printf("  time [12/24]               : time\n");
-        printf("  date [1/2/3]               : date\n\n");
+        printf("  ram [total/used/left]      		: ram info\n");
+        printf("  swap [total/used/left]     		: swap info\n");
+        printf("  cpu [load]                 		: cpu load info\n");
+        printf("  cpufreq (core number)      		: cpu freq by core number\n");
+        printf("  bios [vendor/version/date/release]	: bios info\n");
+        printf("  system [family/name/sku/version]      : system family info\n");
+        printf("  board [tag/name/serial/vendor/version]: motherboard name\n");
+        printf("  proc [num]                 		: list number of processes\n");
+        printf("  time [12/24]               		: time\n");
+        printf("  date [1/2/3]              		: date\n\n");
         printf("Commands: [arg3]\n");        
-        printf("  ram [total/used/left] [val]      : ram info with only values\n");
-        printf("  swap [total/used/left] [val]     : swap info with only values\n");
+        printf("  ram [total/used/left] (val)      : ram info with only values\n");
+        printf("  swap [total/used/left] (val)     : swap info with only values\n");
         printf("  cpu load (core number)           : cpu load info\n");
         printf("Examples:\n");
         printf("  sys os\n");
@@ -80,7 +80,7 @@ int main(int argc, char **argv) {
     	system("echo $LANG | cut -d. -f2");
     };
 
-    if (strcmp(argv[1],"lang") == 0) {
+    if (strcmp(argv[1],"locale") == 0) {
     	system("echo $LANG");
     };
 
@@ -271,8 +271,10 @@ int main(int argc, char **argv) {
                 system("cat /sys/devices/virtual/dmi/id/bios_version");
             } else if (strcmp(argv[2], "date") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/bios_date");
-            } else {
-                printf("Usage: sys bios [vendor|version|date]\n", argv[0]);
+            } else if (strcmp(argv[2], "release") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/bios_release");
+	    } else {
+                printf("Usage: sys bios [vendor/version/date/release]\n", argv[0]);
             }
         }
     }
@@ -282,8 +284,15 @@ int main(int argc, char **argv) {
         } else if (argc > 2) {
             if (strcmp(argv[2], "family") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/product_family");
-            }else {
-                printf("Usage: sys system [family]\n", argv[0]);
+            } else if (strcmp(argv[2], "name") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/product_name");
+            } else if (strcmp(argv[2], "sku") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/product_sku");
+            } else if (strcmp(argv[2], "version") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/product_version");
+            }
+	    else {
+                printf("Usage: sys system [family/name/sku/version]\n", argv[0]);
         }
         } 
     }
@@ -291,10 +300,18 @@ int main(int argc, char **argv) {
         if (argc == 2) {
             system("cat /sys/devices/virtual/dmi/id/board_vendor");
         } else if (argc > 2) {
-            if (strcmp(argv[2], "name") == 0) {
+            if (strcmp(argv[2], "tag") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/board_asset_tag");
+            } else if (strcmp(argv[2], "name") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/board_name");
+            } else  if (strcmp(argv[2], "serial") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/board_serial");
+            } else  if (strcmp(argv[2], "vendor") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/board_vendor");
+            }  if (strcmp(argv[2], "version") == 0) {
+                system("cat /sys/devices/virtual/dmi/id/board_version");
             } else {
-                printf("Usage: sys board [name]\n", argv[0]);
+                printf("Usage: sys board [asset_tag/name/serial/vendor/version]\n", argv[0]);
         }
         }
     }
@@ -319,7 +336,7 @@ int main(int argc, char **argv) {
     }
 
     if (strcmp(argv[1],"version") == 0) {
-        printf("sysinfo v2.0\n");
+        printf("sysinfo v2.1\n");
     }
 
     if (strcmp(argv[1], "version-latest") == 0) {
@@ -343,9 +360,6 @@ int main(int argc, char **argv) {
 	chdir("..");
 	system("rm -rf sysinfo");
     }
-
-
-
 
     return 0;
 };

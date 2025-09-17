@@ -37,7 +37,7 @@ const char* get_icon(const char *cmd) {
     if (strcmp(cmd, "language") == 0) return " ";
     if (strcmp(cmd, "region") == 0) return "󰇧 ";
     if (strcmp(cmd, "encoding") == 0) return "󱘣 ";
-    if (strcmp(cmd, "lang") == 0) return " ";
+    if (strcmp(cmd, "locale") == 0) return " ";
     if (strcmp(cmd, "version") == 0) return " ";
     return "";
 }
