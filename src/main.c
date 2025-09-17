@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
         printf("  cpufreq (core number)      		: cpu freq by core number\n");
         printf("  bios [vendor/version/date/release]	: bios info\n");
         printf("  system [family/name/sku/version]      : system family info\n");
-        printf("  board [tag/name/serial/vendor/version]: motherboard name\n");
+        printf("  board [tag/name/vendor/version]       : motherboard info\n");
         printf("  proc [num]                 		: list number of processes\n");
         printf("  time [12/24]               		: time\n");
         printf("  date [1/2/3]              		: date\n\n");
@@ -304,14 +304,12 @@ int main(int argc, char **argv) {
                 system("cat /sys/devices/virtual/dmi/id/board_asset_tag");
             } else if (strcmp(argv[2], "name") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/board_name");
-            } else  if (strcmp(argv[2], "serial") == 0) {
-                system("cat /sys/devices/virtual/dmi/id/board_serial");
             } else  if (strcmp(argv[2], "vendor") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/board_vendor");
-            }  if (strcmp(argv[2], "version") == 0) {
+            } else if (strcmp(argv[2], "version") == 0) {
                 system("cat /sys/devices/virtual/dmi/id/board_version");
             } else {
-                printf("Usage: sys board [asset_tag/name/serial/vendor/version]\n", argv[0]);
+                printf("Usage: sys board [tag/name/vendor/version]\n", argv[0]);
         }
         }
     }
