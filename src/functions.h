@@ -9,6 +9,7 @@ void swap_total_val();
 void swap_used_val();
 void swap_left_val();
 
+int drives();
 void ram();
 void ram_used();
 void ram_total();

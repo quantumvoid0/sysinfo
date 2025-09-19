@@ -7,4 +7,4 @@
 
 // available colors as of now : red , green , yellow , blue , magenta , cyan , white
 // any argument from `sys` is valid , you can check all valid arguments by typing in `sys` into your terminal
-// NOTE : the `sys fetch` , `sys proc`, `sys version-latest`, `sys update`  & `sys live` arguments do not work with fetch so dont include it here as it will only break the application 
+// NOTE : the `sys fetch` , `sys proc`, `sys version-latest`, `sys update`, `sys drives`  & `sys live` arguments do not work with fetch so dont include it here as it will only break the application 

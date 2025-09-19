@@ -13,7 +13,7 @@ fi
 
 if [[ "$ACTION" == "install" ]]; then
     echo "Compiling binaries..."
-    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c -o sys
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c -o sys
     gcc src/live.c -o live -lncurses -ltinfo
     gcc src/fetch.c -o fetch
 
@@ -48,7 +48,7 @@ elif [[ "$ACTION" == "uninstall" ]]; then
 
 elif [[ "$ACTION" == "update" ]]; then
     echo "Compiling binaries..."
-    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c -o sys
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c -o sys
     gcc src/live.c -o live -lncurses -ltinfo
     gcc src/fetch.c -o fetch
 

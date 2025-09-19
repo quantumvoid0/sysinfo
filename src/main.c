@@ -334,7 +334,7 @@ int main(int argc, char **argv) {
     }
 
     if (strcmp(argv[1],"version") == 0) {
-        printf("sysinfo v2.1.1\n");
+        printf("sysinfo v2.1.2\n");
     }
 
     if (strcmp(argv[1], "version-latest") == 0) {
@@ -358,6 +358,11 @@ int main(int argc, char **argv) {
 	chdir("..");
 	system("rm -rf sysinfo");
     }
+
+    if (strcmp(argv[1],"drives") == 0) {
+        drives();
+    }
+
 
     return 0;
 };
