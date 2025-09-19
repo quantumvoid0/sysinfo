@@ -36,6 +36,7 @@ int main(int argc, char **argv) {
  	printf("  language : returns language\n");
 	printf("  region   : returns region\n");
 	printf("  encoding : returns encoding\n");
+	printf("  drives : drive info\n");
         printf("  me       : user info\n\n");
      	printf("  update         : update current version to the latest\n");
 	printf("  version  	 : installed sysinfo version\n");
