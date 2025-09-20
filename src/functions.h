@@ -24,7 +24,7 @@ void cpufreq();
 void load();
 void load_core();
 void read_cpu_stats();
-float get_core_freq(int core_num);    
+float get_core_freq(int core_num);
 
 void os();
 void kernel();
@@ -35,6 +35,8 @@ void hostname();
 
 void show_time();
 void show_date();
+
+int help();
 
 #endif
 
