@@ -207,6 +207,14 @@ int main(int argc, char **argv) {
 	char outputs[20][256];
 	char last_os[256] = {0};
 
+	{
+		FILE *fp = popen("sys os", "r");
+		if (fp && fgets(last_os, sizeof(last_os), fp)) {
+			last_os[strcspn(last_os, "\n")] = 0;
+		}
+		if (fp) pclose(fp);
+	}
+
 	for (int i = 0; i < n; i++) {
 		int is_forbidden = 0;
 		for (int f = 0; f < forbidden_count; f++) {
