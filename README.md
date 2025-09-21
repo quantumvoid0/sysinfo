@@ -21,20 +21,22 @@
 ## 💾 Installation & Uninstallation
 
 - For install and uninstall instructions please check the wiki
-- direct link : [📊 Sysinfo](https://github.com/quantumvoid0/sysinfo/wiki/🏠-Home)
+- direct link (github): [📊 Sysinfo](https://github.com/quantumvoid0/sysinfo/wiki/🏠-Home)
+- direct link (gitlab): [📊 Sysinfo](https://gitlab.com/quantumvoid0/sysinfo/-/wikis/%F0%9F%8F%A0-Home)
 
 ---
 
 ## 🚀 Usage
 
 - For usage instructions please check the wiki
-- direct link : [📊 how to use sysinfo](https://github.com/quantumvoid0/sysinfo/wiki/🚀-Usage)
+- direct link (github) : [📊 how to use sysinfo](https://github.com/quantumvoid0/sysinfo/wiki/🚀-Usage)
+- direct link (gitlab) : [📊 how to use sysinfo](https://gitlab.com/quantumvoid0/sysinfo/-/wikis/%F0%9F%9A%80-Usage)
 
 ---
 
 ## 📚 Contribution
 
-If you want to contribute, see [CONTRIBUTING.md](https://github.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md)
+If you want to contribute, see [CONTRIBUTING.md (github)](https://github.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md) or [CONTRIBUTING.md (gitlab)](https://gitlab.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md) 
 
 
 ## 📄 License
@@ -45,6 +47,10 @@ This project is licensed under the GNU General Public License v3.0. See the [LIC
 
 ### Made with ❤️ for the Linux community
 
-[Report Bug](https://github.com/quantumvoid0/sysinfo/issues) •
-[Request Feature](https://github.com/quantumvoid0/sysinfo/discussions) •
-[Contribute](https://github.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md)
+[Report Bug on github](https://github.com/quantumvoid0/sysinfo/issues) •
+[Request Feature on github](https://github.com/quantumvoid0/sysinfo/discussions) •
+[Contribute on github](https://github.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md)
+
+[Report Bug on gitlab](https://gitlab.com/quantumvoid0/sysinfo/issues) •
+[Request Feature on gitlab](https://gitlab.com/quantumvoid0/sysinfo/issues) •
+[Contribute on gitlab](https://gitlab.com/quantumvoid0/sysinfo/blob/main/CONTRIBUTING.md)
