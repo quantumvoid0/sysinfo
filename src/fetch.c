@@ -7,6 +7,10 @@
 
 #define INFO_COL 35
 
+const char *forbidden[] = {"fetch",  "proc", "update",
+			   "drives", "live", "verson-latest"};
+int forbidden_count = sizeof(forbidden) / sizeof(forbidden[0]);
+
 const char *current_cmd = NULL;
 
 const char *get_icon(const char *cmd) {
@@ -48,6 +52,12 @@ const char *get_icon(const char *cmd) {
 	if (strcmp(cmd, "encoding") == 0) return "󱘣 ";
 	if (strcmp(cmd, "locale") == 0) return " ";
 	if (strcmp(cmd, "version") == 0) return " ";
+
+	if (strcmp(cmd, "fetch") == 0 || strcmp(cmd, "proc") == 0 ||
+	    strcmp(cmd, "update") == 0 || strcmp(cmd, "drives") == 0 ||
+	    strcmp(cmd, "live") == 0 || strcmp(cmd, "version-latest") == 0)
+		return " ";
+
 	return "";
 }
 
@@ -198,6 +208,18 @@ int main(int argc, char **argv) {
 	char last_os[256] = {0};
 
 	for (int i = 0; i < n; i++) {
+		int is_forbidden = 0;
+		for (int f = 0; f < forbidden_count; f++) {
+			if (strcasecmp(commands[i], forbidden[f]) == 0) {
+				snprintf(outputs[i], sizeof(outputs[i]),
+					 "command is not allowed");
+				is_forbidden = 1;
+				break;
+			}
+		}
+
+		if (is_forbidden) continue;
+
 		char cmd[256];
 		snprintf(cmd, sizeof(cmd), "sys %s", commands[i]);
 		FILE *fp = popen(cmd, "r");
