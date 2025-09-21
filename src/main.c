@@ -373,11 +373,55 @@ int main(int argc, char **argv) {
 	}
 
 	else if (strcmp(argv[1], "update") == 0) {
-		system("git clone https://github.com/quantumvoid0/sysinfo.git");
-		chdir("sysinfo");
-		system("./setup.sh update");
-		chdir("..");
-		system("rm -rf sysinfo");
+		while (1) {
+			printf(
+			    "Where to fetch the update? Both options are "
+			    "official and up-to-date:\n"
+			    "  'github' - fetch from GitHub\n"
+			    "  'gitlab' - fetch from GitLab\n"
+			    "Type 'exit' to cancel: ");
+			char opt[256];
+			fgets(opt, sizeof(opt), stdin);
+			opt[strcspn(opt, "\n")] = 0;
+
+			if (strcmp("github", opt) == 0) {
+				printf("[!] Updating from github\n\n");
+				system(
+				    "git clone "
+				    "https://github.com/quantumvoid0/"
+				    "sysinfo.git");
+				chdir("sysinfo");
+				system("./setup.sh update");
+				chdir("..");
+				system("rm -rf sysinfo");
+				break;
+			}
+
+			else if (strcmp("gitlab", opt) == 0) {
+				printf("[!] Updating from gitlab\n\n");
+				system(
+				    "git clone "
+				    "https://gitlab.com/quantumvoid0/"
+				    "sysinfo.git");
+				chdir("sysinfo");
+				system("./setup.sh update");
+				chdir("..");
+				system("rm -rf sysinfo");
+				break;
+			}
+
+			else if (strcmp("exit", opt) == 0) {
+				break;
+			}
+
+			else {
+				printf(
+				    "\nInvalid choice. Please type 'github', "
+				    "'gitlab', or 'exit'.\n\n");
+				continue;
+			}
+		}
+
 	}
 
 	else if (strcmp(argv[1], "drives") == 0) {
