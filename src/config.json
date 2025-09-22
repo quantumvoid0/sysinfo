@@ -12,6 +12,10 @@
 	],
 	"colors": {
 		"ascii": "white"
+	},
+	"icons": {
+		"root": "",
+		"ram used": ""
 	}
 }
 

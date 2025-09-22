@@ -150,6 +150,52 @@ int load_commands_from_config(char commands[][64], int max_commands,
 	return count;
 }
 
+char icons[20][32];   
+int load_icons_from_config(const char *config_path, char commands[][64], char icons[][32], int max_commands) {
+    FILE *fp = fopen(config_path, "r");
+    if (!fp) return 0;
+
+    char line[256];
+    int in_icons = 0;
+
+    while (fgets(line, sizeof(line), fp)) {
+        if (!in_icons) {
+            if (strstr(line, "\"icons\"")) {
+                in_icons = 1;
+            }
+            continue;
+        }
+
+        if (strchr(line, '}')) break;
+
+        for (int i = 0; i < max_commands; i++) {
+            if (strlen(commands[i]) == 0) continue;
+
+            char pattern[128];
+            snprintf(pattern, sizeof(pattern), "\"%s\"", commands[i]);
+            char *cmdpos = strstr(line, pattern);
+            if (cmdpos) {
+                char *colon = strchr(cmdpos, ':');
+                if (colon) {
+                    colon++;
+                    while (*colon == ' ' || *colon == '\"') colon++;
+                    char *end = strpbrk(colon, "\",}");
+                    if (end) {
+                        int len = end - colon;
+                        if (len > 31) len = 31;
+                        strncpy(icons[i], colon, len);
+                        icons[i][len] = ' ';
+			icons[i][len + 1] = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    fclose(fp);
+    return 1;
+}
+
 int load_ascii_color_from_config(const char *config_path, char *color_name,
 				 int max_len) {
 	FILE *fp = fopen(config_path, "r");
@@ -206,6 +252,9 @@ int main(int argc, char **argv) {
 
 	char outputs[20][256];
 	char last_os[256] = {0};
+	char icons[20][32] = {{0}};
+	load_icons_from_config(config_path, commands, icons, 20);
+
 
 	{
 		FILE *fp = popen("sys os", "r");
@@ -299,8 +348,8 @@ int main(int argc, char **argv) {
 			strncpy(cmd_copy, commands[i], sizeof(cmd_copy) - 1);
 			cmd_copy[sizeof(cmd_copy) - 1] = 0;
 			char *first_word = strtok(cmd_copy, " ");
-			printf("%s %-14s • %s\n", get_icon(first_word),
-			       commands[i], outputs[i]);
+			const char *icon = (strlen(icons[i]) > 0) ? icons[i] : get_icon(first_word);
+			printf("%s %-14s • %s\n", icon, commands[i], outputs[i]);
 		} else {
 			printf("\n");
 		}
