@@ -1,6 +1,11 @@
 # 👨‍💻 Sysinfo
 **Sysinfo; because your system deserves the spotlight. Specs, stats & performance at a glance**
 
+An all in one system fetch tool
+
+<img width="700" height="500" alt="image" src="https://github.com/user-attachments/assets/410564d9-56e9-4a38-bfc0-82c269c09a38" />
+
+
 ---
 
 > [!IMPORTANT]
