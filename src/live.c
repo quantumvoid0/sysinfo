@@ -248,7 +248,7 @@ void proc_box(WINDOW *win, int scroll, int selected_line) {
 	pclose(fp);
 }
 
-int main() {
+int livemode() {
 	initscr();
 	cbreak();
 	noecho();

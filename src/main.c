@@ -181,7 +181,7 @@ int main(int argc, char **argv) {
 	}
 
 	else if (strcmp(argv[1], "live") == 0) {
-		system("live");
+		livemode();
 	}
 
 	else if (argc >= 2 && strcmp(argv[1], "time") == 0) {
@@ -214,13 +214,8 @@ int main(int argc, char **argv) {
 	}
 
 	else if (strcmp(argv[1], "fetch") == 0) {
-		char cmd[256] = "fetch";
-		for (int i = 2; i < argc; i++) {
-			strncat(cmd, " ", sizeof(cmd) - strlen(cmd) - 1);
-			strncat(cmd, argv[i], sizeof(cmd) - strlen(cmd) - 1);
-		}
-		system(cmd);
-	}
+		fetch(argc, argv);
+	}	
 
 	else if (strcmp(argv[1], "shell") == 0) {
 		system("echo ${SHELL##*/}");

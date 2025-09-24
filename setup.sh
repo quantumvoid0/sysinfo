@@ -12,15 +12,16 @@ if [[ -z "$ACTION" ]]; then
 fi
 
 if [[ "$ACTION" == "install" ]]; then
+
+    sudo rm -f "$PREFIX/bin/sys"
+    sudo rm -f "$PREFIX/bin/live"
+    sudo rm -f "$PREFIX/bin/fetch"
+
     echo "[!] Compiling binaries..."
-    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c -o sys
-    gcc src/live.c -o live -lncurses -ltinfo
-    gcc src/fetch.c -o fetch
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c src/fetch.c src/live.c -o sys -lncurses -ltinfo
 
     echo "[!] Installing binaries to $PREFIX/bin..."
     sudo install -Dm755 sys "$PREFIX/bin/sys"
-    sudo install -Dm755 live "$PREFIX/bin/live"
-    sudo install -Dm755 fetch "$PREFIX/bin/fetch"
 
     echo "[!] Creating config directory at $USER_CONFIG..."
     mkdir -p "$USER_CONFIG"
@@ -47,15 +48,16 @@ elif [[ "$ACTION" == "uninstall" ]]; then
     echo "[!] Uninstallation complete!"
 
 elif [[ "$ACTION" == "update" ]]; then
+
+    sudo rm -f "$PREFIX/bin/sys"
+    sudo rm -f "$PREFIX/bin/live"
+    sudo rm -f "$PREFIX/bin/fetch"
+
     echo "[!] Compiling binaries..."
-    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c -o sys
-    gcc src/live.c -o live -lncurses -ltinfo
-    gcc src/fetch.c -o fetch
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c src/fetch.c src/live.c -o sys -lncurses -ltinfo
 
     echo "[!] Updating binaries in $PREFIX/bin..."
     sudo install -Dm755 sys "$PREFIX/bin/sys"
-    sudo install -Dm755 live "$PREFIX/bin/live"
-    sudo install -Dm755 fetch "$PREFIX/bin/fetch"
 
     echo "[!] Updating art in $ART..."
     sudo mkdir -p "$ART"

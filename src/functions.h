@@ -37,6 +37,8 @@ void show_time();
 void show_date();
 
 int help();
+int livemode();
+int fetch();
 
 #endif
 

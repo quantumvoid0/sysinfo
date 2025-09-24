@@ -224,7 +224,7 @@ int load_ascii_color_from_config(const char *config_path, char *color_name,
 	return 0;
 }
 
-int main(int argc, char **argv) {
+int fetch(int argc, char **argv) {
 	char config_path[512];
 	const char *xdg = getenv("XDG_CONFIG_HOME");
 	if (xdg && *xdg)
@@ -293,7 +293,7 @@ int main(int argc, char **argv) {
 
 	OSAscii os_list[64];
 	int os_count = scan_ascii_dir("/usr/share/sysinfo", os_list, 64);
-	if (argc > 1 && strcasecmp(argv[1], "os") == 0) {
+	if (argc > 2 && strcasecmp(argv[2], "os") == 0) {
 		printf("Available OS logos:\n\n");
 		for (int i = 0; i < os_count; i++) {
 			printf("  - %s\n", os_list[i].keyword);
@@ -305,8 +305,8 @@ int main(int argc, char **argv) {
 	int ascii_lines = 0;
 	char logo_override[64] = {0};
 
-	if (argc > 1) {
-		strncpy(logo_override, argv[1], sizeof(logo_override) - 1);
+	if (argc > 2) {
+		strncpy(logo_override, argv[2], sizeof(logo_override) - 1);
 	} else {
 		strncpy(logo_override, last_os, sizeof(logo_override) - 1);
 	}
