@@ -18,7 +18,7 @@ if [[ "$ACTION" == "install" ]]; then
     sudo rm -f "$PREFIX/bin/fetch"
 
     echo "[!] Compiling binaries..."
-    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c src/fetch.c src/live.c -o sys -lncurses -ltinfo
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c src/fetch.c src/fetch/fetch_utils.c src/live.c src/live/live_utils.c -o sys -lncurses -ltinfo
 
     echo "[!] Installing binaries to $PREFIX/bin..."
     sudo install -Dm755 sys "$PREFIX/bin/sys"
@@ -54,7 +54,7 @@ elif [[ "$ACTION" == "update" ]]; then
     sudo rm -f "$PREFIX/bin/fetch"
 
     echo "[!] Compiling binaries..."
-    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c src/fetch.c src/live.c -o sys -lncurses -ltinfo
+    gcc src/main.c src/swap.c src/cpu.c src/ram.c src/sys.c src/time.c src/date.c src/drives.c src/help.c src/fetch.c src/fetch/fetch_utils.c src/live.c src/live/live_utils.c -o sys -lncurses -ltinfo
 
     echo "[!] Updating binaries in $PREFIX/bin..."
     sudo install -Dm755 sys "$PREFIX/bin/sys"
