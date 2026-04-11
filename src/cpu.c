@@ -46,11 +46,6 @@ void cpufreq() {
 
 #define CORES 256
 
-typedef struct {
-	unsigned long long user, nice, system, idle, iowait, irq, softirq,
-	    steal;
-} cpu_stat;
-
 void read_cpu_stats(cpu_stat stats[], int cores) {
 	FILE *fp = fopen("/proc/stat", "r");
 	if (!fp) return;
