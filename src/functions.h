@@ -1,6 +1,10 @@
 #ifndef FUNCTIONS_H
 #define FUNCTIONS_H
 
+typedef struct {
+	unsigned long long user, nice, system, idle, iowait, irq, softirq, steal;
+} cpu_stat;
+
 void swap();
 void swap_total();
 void swap_used();
@@ -22,8 +26,8 @@ void cpu();
 void cpucores();
 void cpufreq();
 void load();
-void load_core();
-void read_cpu_stats();
+void load_core(int core_num);
+void read_cpu_stats(cpu_stat stats[], int cores);
 float get_core_freq(int core_num);
 
 void os();
@@ -33,12 +37,11 @@ void root();
 void me();
 void hostname();
 
-void show_time();
-void show_date();
+void show_time(int mode);
+void show_date(int format);
 
 int help();
 int livemode();
-int fetch();
+int fetch(int argc, char **argv);
 
 #endif
-
