@@ -3,23 +3,7 @@
 
 #include <ncurses.h>
 
-typedef struct {
-	unsigned long long user;
-	unsigned long long nice;
-	unsigned long long system;
-	unsigned long long idle;
-	unsigned long long iowait;
-	unsigned long long irq;
-	unsigned long long softirq;
-	unsigned long long steal;
-} cpu_stat;
-
-#define CORES 256
-
-void read_cpu_stats_live(cpu_stat stats[], int cores);
-float get_total_cpu_usage();
-
-// Boxes section
+#include "functions.h"
 
 void draw_box(WINDOW *win, const char *title);
 void os_box(WINDOW *win);

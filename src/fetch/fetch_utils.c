@@ -8,7 +8,7 @@
 #include "fetch.h"
 
 int load_ascii_color_from_config(const char *config_path, char *color_name,
-				 int max_len) {
+		int max_len) {
 	FILE *fp = fopen(config_path, "r");
 	if (!fp) return 0;
 	char line[256];
@@ -36,7 +36,7 @@ int load_ascii_color_from_config(const char *config_path, char *color_name,
 }
 
 int load_icons_from_config(const char *config_path, char commands[][64],
-			   char icons[][32], int max_commands) {
+		char icons[][32], int max_commands) {
 	FILE *fp = fopen(config_path, "r");
 	if (!fp) return 0;
 
@@ -58,7 +58,7 @@ int load_icons_from_config(const char *config_path, char commands[][64],
 
 			char pattern[128];
 			snprintf(pattern, sizeof(pattern), "\"%s\"",
-				 commands[i]);
+					commands[i]);
 			char *cmdpos = strstr(line, pattern);
 			if (cmdpos) {
 				char *colon = strchr(cmdpos, ':');
@@ -84,7 +84,7 @@ int load_icons_from_config(const char *config_path, char commands[][64],
 }
 
 int load_commands_from_config(char commands[][64], int max_commands,
-			      const char *config_path) {
+		const char *config_path) {
 	FILE *fp = fopen(config_path, "r");
 	if (!fp) return 0;
 	char line[256];
@@ -97,7 +97,7 @@ int load_commands_from_config(char commands[][64], int max_commands,
 		start++;
 		while (*start && count < max_commands) {
 			while (*start && (*start == ' ' || *start == '\"' ||
-					  *start == ','))
+						*start == ','))
 				start++;
 			if (!*start || *start == ']') break;
 			char *end = strpbrk(start, "\",]");
@@ -123,19 +123,18 @@ int scan_ascii_dir(const char *dir_path, OSAscii os_list[], int max_os) {
 	while ((entry = readdir(d)) != NULL && count < max_os) {
 		if (strstr(entry->d_name, ".ascii")) {
 			snprintf(os_list[count].ascii_path,
-				 sizeof(os_list[count].ascii_path), "%s/%s",
-				 dir_path, entry->d_name);
+					sizeof(os_list[count].ascii_path), "%s/%s",
+					dir_path, entry->d_name);
 
-			strncpy(os_list[count].keyword, entry->d_name,
-				sizeof(os_list[count].keyword) - 1);
-			os_list[count]
-			    .keyword[sizeof(os_list[count].keyword) - 1] = 0;
+			snprintf(os_list[count].keyword,
+					sizeof(os_list[count].keyword), "%s",
+					entry->d_name);
 
 			char *dot = strrchr(os_list[count].keyword, '.');
 			if (dot) *dot = 0;
 
 			os_list[count].keyword[0] =
-			    toupper(os_list[count].keyword[0]);
+				toupper(os_list[count].keyword[0]);
 			count++;
 		}
 	}

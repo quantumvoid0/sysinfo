@@ -1,4 +1,5 @@
 #include "live/live.h"
+#include "live/live_data.h"
 
 #include <ncurses.h>
 #include <stdio.h>
@@ -19,8 +20,6 @@ int livemode() {
 	int cpufreq_scroll = 0, ram_scroll = 0, swap_scroll = 0;
 	int proc_scroll = 0, proc_selected = 0;
 
-	int total_cores = sysconf(_SC_NPROCESSORS_ONLN);
-
 	enum { SEL_CPU, SEL_RAM, SEL_SWAP, SEL_PROC } selected = SEL_CPU;
 
 	while (1) {
@@ -37,15 +36,15 @@ int livemode() {
 		WINDOW *cpu_win = newwin(middle_h, middle_w, top_h, 0);
 		WINDOW *freq_win = newwin(middle_h, middle_w, top_h, middle_w);
 		WINDOW *ram_win =
-		    newwin(middle_h, middle_w, top_h + middle_h, 0);
+			newwin(middle_h, middle_w, top_h + middle_h, 0);
 		WINDOW *swap_win =
-		    newwin(middle_h, middle_w, top_h + middle_h, middle_w);
+			newwin(middle_h, middle_w, top_h + middle_h, middle_w);
 
 		int user_root_h = 5;
 		WINDOW *me_win =
-		    newwin(user_root_h, w / 2, top_h + 2 * middle_h, 0);
+			newwin(user_root_h, w / 2, top_h + 2 * middle_h, 0);
 		WINDOW *root_win =
-		    newwin(user_root_h, w / 2, top_h + 2 * middle_h, w / 2);
+			newwin(user_root_h, w / 2, top_h + 2 * middle_h, w / 2);
 
 		int graph_start = top_h + 2 * middle_h + user_root_h;
 		int bottom_h = h - graph_start;
@@ -55,9 +54,9 @@ int livemode() {
 		int proc_w_part = w - graph_w_part;
 
 		WINDOW *graph_win =
-		    newwin(bottom_h, graph_w_part, graph_start, 0);
+			newwin(bottom_h, graph_w_part, graph_start, 0);
 		WINDOW *proc_win =
-		    newwin(bottom_h, proc_w_part, graph_start, graph_w_part);
+			newwin(bottom_h, proc_w_part, graph_start, graph_w_part);
 
 		if (!graph || graph_w != graph_w_part) {
 			if (graph) free(graph);
@@ -68,12 +67,12 @@ int livemode() {
 		}
 
 		WINDOW *wins[] = {os_win,  kernel_win, uptime_win, host_win,
-				  cpu_win, freq_win,   ram_win,	   swap_win,
-				  me_win,  root_win,   graph_win,  proc_win};
+			cpu_win, freq_win,   ram_win,	   swap_win,
+			me_win,  root_win,   graph_win,  proc_win};
 		const char *titles[] = {"OS",	    "KERNEL",	"UPTIME",
-					"HOSTNAME", "CPU",	"FREQ",
-					"RAM",	    "SWAP",	"USER",
-					"ROOT",	    "CPU LOAD", "PROCESSES"};
+			"HOSTNAME", "CPU",	"FREQ",
+			"RAM",	    "SWAP",	"USER",
+			"ROOT",	    "CPU LOAD", "PROCESSES"};
 
 		for (int i = 0; i < 12; i++) draw_box(wins[i], titles[i]);
 
@@ -88,8 +87,8 @@ int livemode() {
 		me_box(me_win);
 		root_box(root_win);
 
-		// CPU graph
-		float usage = get_total_cpu_usage();
+
+		float usage = live_total_cpu_usage();
 		int bar = (int)(usage * (graph_h - 2) / 100.0);
 		graph[graph_pos] = bar;
 		graph_pos = (graph_pos + 1) % graph_w;
@@ -100,7 +99,7 @@ int livemode() {
 			int idx = (graph_pos + x) % graph_w;
 			for (int y = 0; y < graph[idx]; y++)
 				mvwaddch(graph_win, graph_h - 2 - y, x + 1,
-					 '#');
+						'#');
 		}
 		mvwprintw(graph_win, 0, 2, "CPU LOAD | Usage: %.1f%%", usage);
 
@@ -109,14 +108,14 @@ int livemode() {
 		int text_margin = 2;
 		char status_text[128];
 		const char *sel_text = (selected == SEL_CPU)	? "CPU FREQ"
-				       : (selected == SEL_RAM)	? "RAM"
-				       : (selected == SEL_SWAP) ? "SWAP"
-								: "PROCESSES";
+			: (selected == SEL_RAM)	? "RAM"
+			: (selected == SEL_SWAP) ? "SWAP"
+			: "PROCESSES";
 
 		snprintf(status_text, sizeof(status_text),
-			 "Selected: %s  |  LEFT/RIGHT switch  UP/DOWN scroll  "
-			 "Q quit",
-			 sel_text);
+				"Selected: %s  |  LEFT/RIGHT switch  UP/DOWN scroll  "
+				"Q quit",
+				sel_text);
 
 		int start_col = w - strlen(status_text) - text_margin;
 		if (start_col < 0) start_col = 0;
