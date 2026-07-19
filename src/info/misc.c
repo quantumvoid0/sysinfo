@@ -175,11 +175,18 @@ int proc(char *out, size_t sz, int argc, char **argv) {
 	size_t off = 0;
 	if (argc > 2 && strcmp(argv[2], "num") == 0) {
 		int count = 0;
-		for (int pid = 1; pid < 65536; pid++) {
-			char path[32];
-			snprintf(path, sizeof(path), "/proc/%d/stat", pid);
-			if (access(path, F_OK) == 0) count++;
+		DIR *proc = opendir("/proc");
+		if (!proc) {
+			snprintf(out, sz, "opendir failed\n");
+			return 1;
 		}
+		struct dirent *de;
+		while ((de = readdir(proc)) != NULL) {
+			if (de->d_type != DT_DIR) continue;
+			if (atoi(de->d_name) == 0) continue;
+			count++;
+		}
+		closedir(proc);
 		off = out_append(out, off, sz, "%d\n", count);
 		return 0;
 	}
