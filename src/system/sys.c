@@ -95,8 +95,8 @@ int root(char *out, size_t sz, int argc, char **argv) {
 		return 1;
 	}
 	unsigned long long total = (unsigned long long)st.f_blocks * st.f_frsize;
-	unsigned long long avail = (unsigned long long)st.f_bavail * st.f_frsize;
-	unsigned long long used = total - avail;
+	unsigned long long bfree = (unsigned long long)st.f_bfree * st.f_frsize;
+	unsigned long long used = total - bfree;
 	double used_gb = used / (1024.0 * 1024 * 1024);
 	double total_gb = total / (1024.0 * 1024 * 1024);
 	int percent = total ? (int)(used * 100 / total) : 0;

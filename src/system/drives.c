@@ -27,9 +27,9 @@ int drives(char *out, size_t sz, int argc, char **argv) {
 
 		unsigned long long total =
 			(unsigned long long)st.f_blocks * st.f_frsize;
-		unsigned long long avail =
-			(unsigned long long)st.f_bavail * st.f_frsize;
-		unsigned long long used = total - avail;
+		unsigned long long bfree =
+			(unsigned long long)st.f_bfree * st.f_frsize;
+		unsigned long long used = total - bfree;
 		if (total == 0) continue;
 
 		int percent = (int)((used * 100) / total);
