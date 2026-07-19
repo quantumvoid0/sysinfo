@@ -1,3 +1,4 @@
+#define _GNU_SOURCE
 #include "fetch/fetch.h"
 #include "functions.h"
 
