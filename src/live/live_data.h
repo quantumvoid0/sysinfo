@@ -25,4 +25,7 @@ float live_total_cpu_usage(void);
 
 void live_proc_line(char *out, size_t sz, int pid, const char *comm);
 
+void live_battery(char *out, size_t sz);
+void live_battery_full(char lines[][LIVE_LINE_SZ], int *n);
+
 #endif

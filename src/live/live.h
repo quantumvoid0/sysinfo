@@ -17,5 +17,6 @@ void swap_box(WINDOW *win, int scroll_offset);
 void root_box(WINDOW *win);
 void me_box(WINDOW *win);
 void proc_box(WINDOW *win, int scroll, int selected_line);
+void battery_box(WINDOW *win);
 
 #endif

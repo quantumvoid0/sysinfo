@@ -122,7 +122,6 @@ void live_root(char lines[][LIVE_LINE_SZ], int *n) {
 	double total_gb = total / (1024.0 * 1024 * 1024);
 	double used_gb = used / (1024.0 * 1024 * 1024);
 	double avail_gb = avail / (1024.0 * 1024 * 1024);
-	snprintf(lines[(*n)++], LIVE_LINE_SZ, "Filesystem: /");
 	snprintf(lines[(*n)++], LIVE_LINE_SZ, "Total: %.2f GB", total_gb);
 	snprintf(lines[(*n)++], LIVE_LINE_SZ, "Used:  %.2f GB", used_gb);
 	snprintf(lines[(*n)++], LIVE_LINE_SZ, "Avail: %.2f GB", avail_gb);
@@ -167,4 +166,76 @@ float live_total_cpu_usage(void) {
 
 void live_proc_line(char *out, size_t sz, int pid, const char *comm) {
 	snprintf(out, sz, "%-6d %s", pid, comm);
+}
+
+void live_battery(char *out, size_t sz) {
+	FILE *fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
+	if (!fp) {
+		snprintf(out, sz, "N/A");
+		return;
+	}
+	int cap;
+	if (fscanf(fp, "%d", &cap) != 1) {
+		fclose(fp);
+		snprintf(out, sz, "N/A");
+		return;
+	}
+	fclose(fp);
+
+	fp = fopen("/sys/class/power_supply/BAT0/status", "r");
+	if (fp) {
+		char st[16];
+		if (fgets(st, sizeof(st), fp)) {
+			size_t len = strlen(st);
+			if (len > 0 && st[len - 1] == '\n') st[len - 1] = 0;
+			snprintf(out, sz, "%d%% (%s)", cap, st);
+		} else {
+			snprintf(out, sz, "%d%%", cap);
+		}
+		fclose(fp);
+	} else {
+		snprintf(out, sz, "%d%%", cap);
+	}
+}
+
+void live_battery_full(char lines[][LIVE_LINE_SZ], int *n) {
+	*n = 0;
+
+	FILE *fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
+	if (!fp) {
+		snprintf(lines[(*n)++], LIVE_LINE_SZ, "Status: Not present");
+		return;
+	}
+	int cap;
+	if (fscanf(fp, "%d", &cap) != 1) {
+		fclose(fp);
+		snprintf(lines[(*n)++], LIVE_LINE_SZ, "Status: Not present");
+		return;
+	}
+	fclose(fp);
+
+	snprintf(lines[(*n)++], LIVE_LINE_SZ, "Capacity: %d%%", cap);
+
+	fp = fopen("/sys/class/power_supply/BAT0/status", "r");
+	if (fp) {
+		char st[16];
+		if (fgets(st, sizeof(st), fp)) {
+			size_t len = strlen(st);
+			if (len > 0 && st[len - 1] == '\n') st[len - 1] = 0;
+			snprintf(lines[(*n)++], LIVE_LINE_SZ, "Status: %s", st);
+		}
+		fclose(fp);
+	}
+
+	char bar[32];
+	int pos = 0;
+	bar[pos++] = '[';
+	int bar_w = 10;
+	int filled = (cap * bar_w) / 100;
+	if (filled > bar_w) filled = bar_w;
+	for (int i = 0; i < bar_w; i++)
+		bar[pos++] = i < filled ? '#' : '.';
+	bar[pos++] = ']';
+	bar[pos] = '\0';
+	snprintf(lines[(*n)++], LIVE_LINE_SZ, "%s", bar);
 }

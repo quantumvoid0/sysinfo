@@ -103,11 +103,20 @@ void me_box(WINDOW *win) {
 	mvwprintw(win, 1, 2, "%s", buf);
 }
 
-void proc_box(WINDOW *win, int scroll, int selected_line) {
-	werase(win);
-	box(win, 0, 0);
-	mvwprintw(win, 0, 2, "PROCESSES");
+void battery_box(WINDOW *win) {
+	char lines[LIVE_MAX_LINES][LIVE_LINE_SZ];
+	int n = 0;
+	live_battery_full(lines, &n);
 
+	int max_rows, max_cols;
+	getmaxyx(win, max_rows, max_cols);
+	(void)max_cols;
+	int row = 1;
+	for (int i = 0; i < n && row < max_rows - 1; i++)
+		mvwprintw(win, row++, 2, "%s", lines[i]);
+}
+
+void proc_box(WINDOW *win, int scroll, int selected_line) {
 	int maxy, maxx;
 	getmaxyx(win, maxy, maxx);
 
